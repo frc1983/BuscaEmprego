@@ -94,7 +94,8 @@ ALTER TABLE Empresa ADD CONSTRAINT Empresa_Endereco FOREIGN KEY (Endereco_Id)
 
 -- Reference: Usuario_Endereco (table: Usuario)
 ALTER TABLE Usuario ADD CONSTRAINT Usuario_Endereco FOREIGN KEY (Endereco_Id)
-    REFERENCES Endereco (Id);
+    REFERENCES Endereco (Id)
+	ON DELETE CASCADE;
 
 -- Reference: Usuario_Perfil_Perfil (table: Usuario_Perfil)
 ALTER TABLE Usuario_Perfil ADD CONSTRAINT Usuario_Perfil_Perfil FOREIGN KEY (Perfil_Id)

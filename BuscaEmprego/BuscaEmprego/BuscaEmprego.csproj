@@ -276,6 +276,16 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BuscaEmprego.Business\BuscaEmprego.Business.csproj">
+      <Project>{e858f0ea-1178-42ce-812c-fcb211f6cca2}</Project>
+      <Name>BuscaEmprego.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BuscaEmprego.Entities\BuscaEmprego.Entities.csproj">
+      <Project>{054B12E3-BDC6-44E8-8B02-A043D2FED1D4}</Project>
+      <Name>BuscaEmprego.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -287,11 +297,11 @@
     <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
   </Target>
   <PropertyGroup>
-   <PostBuildEvent>
+    <PostBuildEvent>
      if not exist "$(WebProjectOutputDir)\bin\Roslyn" md "$(WebProjectOutputDir)\bin\Roslyn"
      start /MIN xcopy /s /y /R "$(OutDir)roslyn\*.*" "$(WebProjectOutputDir)\bin\Roslyn"
    </PostBuildEvent>
- </PropertyGroup>
+  </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
