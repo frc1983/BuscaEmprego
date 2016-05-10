@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using BuscaEmprego.Models;
 using BuscaEmprego.Business;
 using BuscaEmprego.Entities;
+using BuscaEmprego.Enumerators;
 
 namespace BuscaEmprego.Controllers
 {
@@ -137,36 +138,32 @@ namespace BuscaEmprego.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(UsuarioViewModel model)
         {
+            if (model.TipoUsuario == EnumTipoUsuario.Usuario)
+                ModelState.Remove("CNPJ");
+            else
+                ModelState.Remove("CPF");
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    var usuario = new Usuario()
-                    {
-                        Nome = "Fábio",
-                        CPF = 0,
-                        Endereco = new Endereco()
-                        {
-                            CEP = 0,
-                            Complemento = "Bloco",
-                            Logradouro = "Rua",
-                            Telefone = 0,
-                            Tipo = "Casa",
-                        }
-                    };
                     try
                     {
-                        new UsuarioBusiness().RegistraLogin(usuario);
+                        if (model.TipoUsuario == EnumTipoUsuario.Usuario)
+                        {
+                            var usuario = UsuarioViewModel.ParseUsuarioToEntity(model);
+                            new UsuarioBusiness().RegistraLogin(usuario);
+                        }
+                        else
+                        {
+                            var usuario = UsuarioViewModel.ParseEmpresaToEntity(model);
+                            new EmpresaBusiness().RegistraLogin(usuario);
+                        }
+                        
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     } catch (Exception e)
                     {

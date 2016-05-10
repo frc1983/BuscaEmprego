@@ -1,16 +1,77 @@
-﻿@model BuscaEmprego.Models.RegisterViewModel
+﻿@model BuscaEmprego.Models.UsuarioViewModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Nova Conta";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
+    <h4>Criar uma conta no BuscaEmprego</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <h4>Dados Pessoais</h4>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TipoUsuario, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.TipoUsuario, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoUsuario(), 
+           new { @class = "form-control", id = "usuario-tipo" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Nome, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Nome, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group" id="usuario-cpf-control">
+        @Html.LabelFor(m => m.CPF, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.CPF, new { @class = "form-control", id = "usuario-cpf", maxlength = 11 })
+        </div>
+    </div>
+    <div class="form-group" id="usuario-cnpj-control">
+        @Html.LabelFor(m => m.CNPJ, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.CNPJ, new { @class = "form-control", id = "usuario-cnpj", maxlength = 14 })
+        </div>
+    </div>
+
+    <h4>Dados de Localização</h4>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Endereco.CEP, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Endereco.CEP, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Endereco.Logradouro, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Endereco.Logradouro, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Endereco.Complemento, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Endereco.Complemento, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Endereco.Telefone, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Endereco.Telefone, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Endereco.Tipo, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Endereco.Tipo, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <h4>Dados de Acesso</h4>
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
@@ -37,5 +98,21 @@
 }
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
 }
+<script>
+    $(document).ready(function () {
+        $("#usuario-cpf-control").show();
+        $("#usuario-cnpj-control").hide();
+    });
+    $("#usuario-tipo").change(function () {
+        if ($(this).val() == "Usuario") {
+            $("#usuario-cpf-control").show();
+            $("#usuario-cnpj-control").hide();
+        } else {
+            $("#usuario-cpf-control").hide();
+            $("#usuario-cnpj-control").show();
+        }
+    });
+</script>

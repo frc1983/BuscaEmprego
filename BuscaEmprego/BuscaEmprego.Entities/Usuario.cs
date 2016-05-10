@@ -24,6 +24,10 @@ namespace BuscaEmprego.Entities
         [StringLength(255)]
         public string Nome { get; set; }
 
+        [Required]
+        [StringLength(255)]
+        public string Senha { get; set; }
+
         public virtual Endereco Endereco { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
