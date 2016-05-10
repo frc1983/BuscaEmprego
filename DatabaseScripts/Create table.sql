@@ -9,6 +9,7 @@ CREATE TABLE Empresa (
     Endereco_Id int NOT NULL,
     CNPJ bigint NOT NULL,
     Nome varchar(255) NOT NULL,
+	Senha varchar(255) NOT NULL,
     CONSTRAINT PK_Id PRIMARY KEY (Id)
 );
 
@@ -43,6 +44,7 @@ CREATE TABLE Usuario (
     Endereco_Id int NOT NULL,
     CPF bigint NOT NULL,
     Nome varchar(255) NOT NULL,
+	Senha varchar(255) NOT NULL,
     CONSTRAINT Usuario_pk PRIMARY KEY (Id)
 );
 
