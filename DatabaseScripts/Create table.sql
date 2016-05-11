@@ -20,7 +20,7 @@ CREATE TABLE Endereco (
     Complemento varchar(255) NOT NULL,
     CEP int NOT NULL,
     Tipo varchar(255) NOT NULL,
-    Telefone int NOT NULL,
+    Telefone bigint NOT NULL,
     CONSTRAINT Endereco_pk PRIMARY KEY (Id)
 );
 
