@@ -12,6 +12,7 @@ using BuscaEmprego.Models;
 using BuscaEmprego.Business;
 using BuscaEmprego.Entities;
 using BuscaEmprego.Enumerators;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BuscaEmprego.Controllers
 {
@@ -25,7 +26,7 @@ namespace BuscaEmprego.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -37,9 +38,9 @@ namespace BuscaEmprego.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -54,14 +55,14 @@ namespace BuscaEmprego.Controllers
                 _userManager = value;
             }
         }
-        
+
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -89,7 +90,7 @@ namespace BuscaEmprego.Controllers
                     return View(model);
             }
         }
-        
+
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
@@ -100,7 +101,7 @@ namespace BuscaEmprego.Controllers
             }
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -115,7 +116,7 @@ namespace BuscaEmprego.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -128,13 +129,13 @@ namespace BuscaEmprego.Controllers
                     return View(model);
             }
         }
-        
+
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -147,12 +148,15 @@ namespace BuscaEmprego.Controllers
 
             if (ModelState.IsValid)
             {
+
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     try
                     {
+                        ManageRoles(user, model);
                         if (model.TipoUsuario == EnumTipoUsuario.Usuario)
                         {
                             var usuario = UsuarioViewModel.ParseUsuarioToEntity(model);
@@ -165,10 +169,11 @@ namespace BuscaEmprego.Controllers
                         }
                         
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    } catch (Exception e)
+                    }
+                    catch (Exception e)
                     {
                         ModelState.AddModelError("ErroRegistro", e.Message);
-                    }                    
+                    }
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -178,7 +183,41 @@ namespace BuscaEmprego.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        
+
+        private void ManageRoles(ApplicationUser user, UsuarioViewModel model)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var roleStore = new RoleStore<IdentityRole>(context);
+                var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+                
+                ValidateRolesExists(context);
+
+                if (model.TipoUsuario == EnumTipoUsuario.Usuario)
+                    userManager.AddToRole(user.Id, "candidato");
+                else
+                    userManager.AddToRole(user.Id, "empresa");
+
+            }
+        }
+
+        private void ValidateRolesExists(ApplicationDbContext context)
+        {
+            var roleCandidato = new IdentityRole { Name = "candidato" };
+            var roleEmpresa = new IdentityRole { Name = "empresa" };
+
+            if (context.Roles.Select(x => x.Name == "candidato").Count() <= 0)
+                context.Roles.Add(roleCandidato);
+            if (context.Roles.Select(x => x.Name == "empresa").Count() <= 0)
+                context.Roles.Add(roleEmpresa);
+            if (context.Roles.Select(x => x.Name == "candidato").Count() <= 0 || 
+                context.Roles.Select(x => x.Name == "empresa").Count() <= 0)
+                context.SaveChanges();
+        }
+
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
@@ -189,13 +228,13 @@ namespace BuscaEmprego.Controllers
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
-        
+
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -221,19 +260,19 @@ namespace BuscaEmprego.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        
+
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
             return View();
         }
-        
+
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
             return code == null ? View("Error") : View();
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -257,13 +296,13 @@ namespace BuscaEmprego.Controllers
             AddErrors(result);
             return View();
         }
-        
+
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
             return View();
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -272,7 +311,7 @@ namespace BuscaEmprego.Controllers
             // Request a redirect to the external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
-        
+
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
@@ -285,7 +324,7 @@ namespace BuscaEmprego.Controllers
             var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -303,7 +342,7 @@ namespace BuscaEmprego.Controllers
             }
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
-        
+
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
@@ -331,7 +370,7 @@ namespace BuscaEmprego.Controllers
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -367,7 +406,7 @@ namespace BuscaEmprego.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
@@ -375,7 +414,7 @@ namespace BuscaEmprego.Controllers
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
-        
+
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {

@@ -20,7 +20,7 @@ namespace BuscaEmprego.Models
         public string Complemento { get; set; }
 
         [Display(Name = "Telefone")]
-        public int Telefone { get; set; }
+        public long Telefone { get; set; }
 
         [Display(Name = "Tipo (Casa, Apartamento, Comércio)")]
         public string Tipo { get; set; }

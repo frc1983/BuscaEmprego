@@ -22,6 +22,10 @@ namespace BuscaEmprego.Entities
 
         [Required]
         [StringLength(255)]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(255)]
         public string Nome { get; set; }
 
         [Required]

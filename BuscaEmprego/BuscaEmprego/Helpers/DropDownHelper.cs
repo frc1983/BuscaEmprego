@@ -11,7 +11,7 @@ namespace BuscaEmprego.Helpers
         public static IEnumerable<SelectListItem> GetDropdownTipoUsuario()
         {
             List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(new SelectListItem() { Text = "Usuário", Value = "Usuario" });
+            list.Add(new SelectListItem() { Text = "Candidato", Value = "Usuario" });
             list.Add(new SelectListItem() { Text = "Empresa", Value = "Empresa" });
 
             return list;

@@ -11,7 +11,7 @@ namespace BuscaEmprego.Models
     public class UsuarioViewModel : RegisterViewModel
     {
         [Required]
-        [Display(Name = "Nome")]
+        [Display(Name = "Nome Completo")]
         public string Nome { get; set; }
 
         [Display(Name = "CPF")]
@@ -31,6 +31,7 @@ namespace BuscaEmprego.Models
             {
                 Nome = vm.Nome,
                 CPF = vm.CPF,
+                Email = vm.Email,
                 Senha = vm.Password,
                 Endereco = EnderecoViewModel.ParseEnderecoToEntity(vm.Endereco)
             };
@@ -42,6 +43,7 @@ namespace BuscaEmprego.Models
             {
                 Nome = vm.Nome,
                 CNPJ = vm.CNPJ,
+                Email = vm.Email,
                 Senha = vm.Password,
                 Endereco = EnderecoViewModel.ParseEnderecoToEntity(vm.Endereco)
             };
