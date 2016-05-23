@@ -16,5 +16,14 @@ namespace BuscaEmprego.Helpers
 
             return list;
         }
+
+        public static IEnumerable<SelectListItem> GetDropdownTipoVaga()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem() { Text = "Emprego", Value = "Emprego" });
+            list.Add(new SelectListItem() { Text = "Estágio", Value = "Estágio" });
+
+            return list;
+        }
     }
 }

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace BuscaEmprego.Business
 {
-    public class EmpresaBusiness
+    public class VagasBusiness
     {
-        public Nullable<Int32> RegistraLogin(Empresa usuario)
+        public Nullable<Int32> RegistraVaga(Vaga vaga)
         {
             try
             {
-                return new EmpresaDAO().RegistraUsuario(usuario);
+                return new VagaDAO().RegistraVaga(vaga);
             }
             catch (BusinessException e)
             {
@@ -26,11 +26,11 @@ namespace BuscaEmprego.Business
             }
         }
 
-        public static Empresa BuscarEmpresa(string nome)
+        public static Tipo BuscarTipoVaga(int tipoVaga)
         {
             try
             {
-                return new EmpresaDAO().BuscarEmpresa(nome);
+                return new TipoDAO().BuscarTipoVaga(tipoVaga);
             }
             catch (BusinessException e)
             {
