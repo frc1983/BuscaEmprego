@@ -16,10 +16,6 @@ namespace BuscaEmprego.Business
             {
                 return new EmpresaDAO().RegistraUsuario(usuario);
             }
-            catch (BusinessException e)
-            {
-                throw new Exception(e.Message);
-            }
             catch (DAOException e)
             {
                 throw new Exception(e.Message);
@@ -30,11 +26,11 @@ namespace BuscaEmprego.Business
         {
             try
             {
-                return new EmpresaDAO().BuscarEmpresa(nome);
-            }
-            catch (BusinessException e)
-            {
-                throw new Exception(e.Message);
+                var empresa = new EmpresaDAO().BuscarEmpresa(nome);
+                if (empresa == null)
+                    throw new BusinessException("Nenhuma empresa encontrada.");
+
+                return empresa;
             }
             catch (DAOException e)
             {

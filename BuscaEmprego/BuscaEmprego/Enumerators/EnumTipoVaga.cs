@@ -7,7 +7,7 @@ namespace BuscaEmprego.Enumerators
 {
     public enum EnumTipoVaga
     {
-        Emprego,
-        Estágio
+        Emprego = 1,
+        Estágio = 2
     }
 }

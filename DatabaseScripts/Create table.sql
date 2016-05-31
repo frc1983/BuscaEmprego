@@ -67,9 +67,9 @@ CREATE TABLE Vaga (
     Beneficios text NOT NULL,
     Ativa bit NOT NULL,
     Data_Cadastro date NOT NULL,
-    Data_Preenchimento_Vaga date NOT NULL,
-    Data_Cancelamento date NOT NULL,
-    Data_Ativacao date NOT NULL,
+    Data_Preenchimento_Vaga date NULL,
+    Data_Cancelamento date NULL,
+    Data_Ativacao date NULL,
     CONSTRAINT Vaga_pk PRIMARY KEY (Id)
 );
 
@@ -135,5 +135,7 @@ ALTER TABLE Vaga_Usuario ADD CONSTRAINT Vaga_Usuario_Vaga FOREIGN KEY (Vaga_Id)
 ALTER TABLE Vaga ADD CONSTRAINT Vaga_Vaga_Tipo FOREIGN KEY (Tipo_Id)
     REFERENCES Tipo (Id);
 
+INSERT INTO Tipo (Tipo) VALUES ('Empresa')
+INSERT INTO Tipo (Tipo) VALUES ('Estágio')
 -- End of file.
 rollback

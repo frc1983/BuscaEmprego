@@ -10,16 +10,18 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BuscaEmprego.Models
 {
-    public class VagasViewModel : RegisterViewModel
+    public class VagasViewModel : ResultadoViewModel
     {
         [Required]
         [Display(Name = "Descrição")]
         public string Descricao { get; set; }
 
+        [Required]
         [Display(Name = "Salario")]
-        [DisplayFormat(DataFormatString = "{0:n2}")]
-        public decimal Salario { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C0}", ApplyFormatInEditMode = true)]
+        public String Salario { get; set; }
 
+        [Required]
         [Display(Name = "Beneficios")]
         public string Beneficios { get; set; }
 
@@ -29,23 +31,26 @@ namespace BuscaEmprego.Models
         [Display(Name = "Ativa")]
         public bool Ativa { get; set; }
 
-        public Empresa Empresa { get; set; }
+        public String EmailEmpresa { get; set; }
 
         public static Vaga ParseVagaToEntity(VagasViewModel vm)
         {
-            Empresa empresa = EmpresaBusiness.BuscarEmpresa(System.Environment.UserName);
-            Tipo tipo = VagasBusiness.BuscarTipoVaga((int)vm.TipoVaga);
-            return new Vaga()
+            Empresa empresa = EmpresaBusiness.BuscarEmpresa(vm.EmailEmpresa);
+            Tipo tipo = TipoBusiness.BuscarTipoVaga((int)vm.TipoVaga);
+            var salario = decimal.Parse(vm.Salario.Replace("R$", "").Replace(".", "").Trim());
+            
+            var vaga = new Vaga()
             {
                 Descricao = vm.Descricao,
-                Salario = vm.Salario,
+                Salario = salario,
                 Beneficios = vm.Beneficios,
                 Tipo = tipo,
-                Ativa = true,
-                Data_Cadastro = new DateTime(),
-                Data_Ativacao = new DateTime(),
+                Ativa = false,
+                Data_Cadastro = DateTime.Now,
                 Empresa = empresa
             };
+
+            return vaga;
         }
     }
 }

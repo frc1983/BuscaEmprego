@@ -199,6 +199,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\VagasController.cs" />
+    <Compile Include="Enumerators\CodigoResultadoEnum.cs" />
     <Compile Include="Enumerators\EnumTipoVaga.cs" />
     <Compile Include="Enumerators\EnumTipoUsuario.cs" />
     <Compile Include="Global.asax.cs">
@@ -209,6 +210,7 @@
     <Compile Include="Models\EnderecoViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ResultadoViewModel.cs" />
     <Compile Include="Models\VagasViewModel.cs" />
     <Compile Include="Models\UsuarioViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

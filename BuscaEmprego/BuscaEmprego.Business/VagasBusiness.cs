@@ -14,27 +14,10 @@ namespace BuscaEmprego.Business
         {
             try
             {
-                return new VagaDAO().RegistraVaga(vaga);
-            }
-            catch (BusinessException e)
-            {
-                throw new Exception(e.Message);
-            }
-            catch (DAOException e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
+                if (vaga.Salario < 0)
+                    throw new BusinessException("Sálario deve ser superior a zero.");
 
-        public static Tipo BuscarTipoVaga(int tipoVaga)
-        {
-            try
-            {
-                return new TipoDAO().BuscarTipoVaga(tipoVaga);
-            }
-            catch (BusinessException e)
-            {
-                throw new Exception(e.Message);
+                return new VagaDAO().RegistraVaga(vaga);
             }
             catch (DAOException e)
             {

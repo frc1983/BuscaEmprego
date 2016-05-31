@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessException.cs" />
+    <Compile Include="TipoBusiness.cs" />
     <Compile Include="VagasBusiness.cs" />
     <Compile Include="EmpresaBusiness.cs" />
     <Compile Include="LoginBusiness.cs" />

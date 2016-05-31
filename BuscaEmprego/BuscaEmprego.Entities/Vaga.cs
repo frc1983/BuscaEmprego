@@ -37,13 +37,13 @@ namespace BuscaEmprego.Entities
         public DateTime Data_Cadastro { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime Data_Preenchimento_Vaga { get; set; }
+        public DateTime? Data_Preenchimento_Vaga { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime Data_Cancelamento { get; set; }
+        public DateTime? Data_Cancelamento { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime Data_Ativacao { get; set; }
+        public DateTime? Data_Ativacao { get; set; }
 
         public virtual Empresa Empresa { get; set; }
 

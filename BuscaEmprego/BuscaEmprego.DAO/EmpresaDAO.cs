@@ -1,5 +1,6 @@
 ﻿using BuscaEmprego.Entities;
 using System;
+using System.Linq;
 
 namespace BuscaEmprego.DAO
 {
@@ -22,13 +23,13 @@ namespace BuscaEmprego.DAO
             }
         }
 
-        public Empresa BuscarEmpresa(string nome)
+        public Empresa BuscarEmpresa(string email)
         {
             try
             {
                 using (var db = new BuscaEmprego())
                 {
-                    return db.Empresa.Find(nome);
+                    return db.Empresa.Where(x => x.Email == email).FirstOrDefault();
                 }
             }
             catch (Exception e)
