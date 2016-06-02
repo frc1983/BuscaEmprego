@@ -24,5 +24,68 @@ namespace BuscaEmprego.Business
                 throw new Exception(e.Message);
             }
         }
+
+        public void EditarVaga(Vaga vaga)
+        {
+            try
+            {
+                if (vaga.Salario < 0)
+                    throw new BusinessException("Sálario deve ser superior a zero.");
+
+                new VagaDAO().EditarVaga(vaga);
+            }
+            catch (DAOException e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void RemoverVaga(Vaga vaga)
+        {
+            try
+            {
+                new VagaDAO().RemoverVaga(vaga);
+            }
+            catch (DAOException e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public static Vaga BuscarVaga(int idVaga)
+        {
+            try
+            {
+                return new VagaDAO().BuscarVaga(idVaga);
+            }
+            catch (DAOException e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public static List<Vaga_Usuario> ListarCandidatos(int idVaga)
+        {
+            try
+            {
+                return new VagaDAO().ListarCandidatos(idVaga);
+            }
+            catch (DAOException e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void CandidatarVaga(Vaga_Usuario vagaUsuario)
+        {
+            try
+            {
+                new VagaDAO().CandidatarVaga(vagaUsuario);
+            }
+            catch (DAOException e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

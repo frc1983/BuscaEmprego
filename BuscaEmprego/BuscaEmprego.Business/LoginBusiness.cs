@@ -25,5 +25,21 @@ namespace BuscaEmprego.Business
                 throw new Exception(e.Message);
             }
         }
+
+        public static Usuario BuscarUsuario(string nome)
+        {
+            try
+            {
+                var usuario = new UsuarioDAO().BuscarUsuario(nome);
+                if (usuario == null)
+                    throw new BusinessException("Nenhum usuário encontrado.");
+
+                return usuario;
+            }
+            catch (DAOException e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
