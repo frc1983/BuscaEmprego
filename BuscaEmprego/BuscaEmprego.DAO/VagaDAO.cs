@@ -40,13 +40,13 @@ namespace BuscaEmprego.DAO
             }
         }
 
-        public void RemoverVaga(Vaga vaga)
+        public void RemoverVaga(int idVaga)
         {
             try
             {
                 using (var db = new BuscaEmprego())
                 {
-                    db.Vaga.Remove(vaga);
+                    db.Vaga.Remove(BuscarVaga(idVaga));
                     db.SaveChanges();
                 }
             }

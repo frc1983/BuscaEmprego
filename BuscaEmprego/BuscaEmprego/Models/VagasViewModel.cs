@@ -12,8 +12,6 @@ namespace BuscaEmprego.Models
 {
     public class VagasViewModel : ResultadoViewModel
     {
-        public int Id { get; set; }
-
         [Required]
         [Display(Name = "Descrição")]
         public string Descricao { get; set; }
@@ -37,9 +35,6 @@ namespace BuscaEmprego.Models
 
         public static Vaga ParseVagaToEntity(VagasViewModel vm)
         {
-            if (vm.Id == 0)
-                return VagasBusiness.BuscarVaga(vm.Id);
-
             Empresa empresa = EmpresaBusiness.BuscarEmpresa(vm.EmailEmpresa);
             Tipo tipo = TipoBusiness.BuscarTipoVaga((int)vm.TipoVaga);
             var salario = decimal.Parse(vm.Salario.Replace("R$", "").Replace(".", "").Trim());
@@ -58,10 +53,43 @@ namespace BuscaEmprego.Models
             return vaga;
         }
 
-        public static Vaga_Usuario ParseVagaToVagaUsuario(VagasViewModel vm)
+        public static Vaga ParseVagaToEntityEditar(VagasViewModel vm, int idVaga)
+        {
+            Vaga vaga = VagasBusiness.BuscarVaga(idVaga);
+
+            Tipo tipo = TipoBusiness.BuscarTipoVaga((int)vm.TipoVaga);
+            var salario = decimal.Parse(vm.Salario.Replace("R$", "").Replace(".", "").Trim());
+
+            vaga.Salario = salario;
+            vaga.Tipo = tipo;
+            vaga.Descricao = vm.Descricao;
+            vaga.Beneficios = vm.Beneficios;
+            vaga.Ativa = vm.Ativa;
+
+            return vaga;
+        }
+
+        public static VagasViewModel ParseEntityToVaga(int idVaga)
+        {
+            Vaga vaga = VagasBusiness.BuscarVaga(idVaga);
+
+            var vagasViewModel = new VagasViewModel()
+            {
+                Descricao = vaga.Descricao,
+                Salario = vaga.Salario.ToString(),
+                Beneficios = vaga.Beneficios,
+                TipoVaga = vaga.Tipo_Id == 1 ? EnumTipoVaga.Emprego : EnumTipoVaga.Estágio,
+                Ativa = vaga.Ativa,
+                EmailEmpresa = vaga.Empresa.Email
+            };
+
+            return vagasViewModel;
+        }
+
+        public static Vaga_Usuario ParseVagaToVagaUsuario(VagasViewModel vm, int idVaga)
         {
             Usuario usuario = UsuarioBusiness.BuscarUsuario(vm.EmailEmpresa);
-            Vaga vaga = VagasBusiness.BuscarVaga(vm.Id);
+            Vaga vaga = VagasBusiness.BuscarVaga(idVaga);
 
             var vagaUsuario = new Vaga_Usuario()
             {

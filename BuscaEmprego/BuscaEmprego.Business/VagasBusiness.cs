@@ -40,11 +40,11 @@ namespace BuscaEmprego.Business
             }
         }
 
-        public void RemoverVaga(Vaga vaga)
+        public void RemoverVaga(int idVaga)
         {
             try
             {
-                new VagaDAO().RemoverVaga(vaga);
+                new VagaDAO().RemoverVaga(idVaga);
             }
             catch (DAOException e)
             {
