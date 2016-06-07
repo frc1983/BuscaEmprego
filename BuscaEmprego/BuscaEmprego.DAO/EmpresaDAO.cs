@@ -37,5 +37,20 @@ namespace BuscaEmprego.DAO
                 throw new DAOException("Erro ao buscar empresa.");
             }
         }
+
+        public Empresa BuscarEmpresa(int id)
+        {
+            try
+            {
+                using (var db = new BuscaEmprego())
+                {
+                    return db.Empresa.Where(x => x.Id == id).FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new DAOException("Erro ao buscar empresa.");
+            }
+        }
     }
 }

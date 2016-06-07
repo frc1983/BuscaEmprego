@@ -40,6 +40,30 @@ namespace BuscaEmprego.DAO
             }
         }
 
+        public List<Vaga> ListaVagas(int tipoVaga, string query)
+        {
+            try
+            {
+                List<Vaga> retorno = new List<Vaga>();
+                using (var db = new BuscaEmprego())
+                {
+                    var vaga = db.Vaga.Where(x => x.Ativa && x.Tipo_Id == tipoVaga);
+
+                    if (!string.IsNullOrEmpty(query))
+                        vaga = vaga.Where(x => x.Descricao.Contains(query) ||
+                            x.Beneficios.Contains(query));
+
+                    retorno = vaga.ToList();                    
+                }
+
+                return retorno;
+            }
+            catch (Exception)
+            {
+                throw new DAOException("Erro ao buscar vagas.");
+            }
+        }
+
         public void RemoverVaga(int idVaga)
         {
             try

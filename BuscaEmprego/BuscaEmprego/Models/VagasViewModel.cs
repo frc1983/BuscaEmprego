@@ -69,10 +69,8 @@ namespace BuscaEmprego.Models
             return vaga;
         }
 
-        public static VagasViewModel ParseEntityToVaga(int idVaga)
+        public static VagasViewModel ParseEntityToVaga(Vaga vaga)
         {
-            Vaga vaga = VagasBusiness.BuscarVaga(idVaga);
-
             var vagasViewModel = new VagasViewModel()
             {
                 Descricao = vaga.Descricao,
@@ -80,7 +78,7 @@ namespace BuscaEmprego.Models
                 Beneficios = vaga.Beneficios,
                 TipoVaga = vaga.Tipo_Id == 1 ? EnumTipoVaga.Emprego : EnumTipoVaga.Estágio,
                 Ativa = vaga.Ativa,
-                EmailEmpresa = vaga.Empresa.Email
+                EmailEmpresa = new EmpresaBusiness().BuscaEmpresa(vaga.Empresa_Id).Email
             };
 
             return vagasViewModel;

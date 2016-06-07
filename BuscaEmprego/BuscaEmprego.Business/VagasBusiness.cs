@@ -25,6 +25,18 @@ namespace BuscaEmprego.Business
             }
         }
 
+        public List<Vaga> ListaVagas(int tipoVaga, string query)
+        {
+            try
+            {
+                return new VagaDAO().ListaVagas(tipoVaga, query);
+            }
+            catch (DAOException e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public void EditarVaga(Vaga vaga)
         {
             try

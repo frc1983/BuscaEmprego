@@ -8,6 +8,8 @@ namespace BuscaEmprego.DAO
         public BuscaEmprego()
             : base("name=BuscaEmprego")
         {
+            this.Configuration.LazyLoadingEnabled = true;
+            this.Configuration.ProxyCreationEnabled = false;
         }
 
         public virtual DbSet<Empresa> Empresa { get; set; }

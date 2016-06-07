@@ -37,5 +37,21 @@ namespace BuscaEmprego.Business
                 throw new Exception(e.Message);
             }
         }
+
+        public Empresa BuscaEmpresa(int empresa_Id)
+        {
+            try
+            {
+                var empresa = new EmpresaDAO().BuscarEmpresa(empresa_Id);
+                if (empresa == null)
+                    throw new BusinessException("Nenhuma empresa encontrada.");
+
+                return empresa;
+            }
+            catch (DAOException e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

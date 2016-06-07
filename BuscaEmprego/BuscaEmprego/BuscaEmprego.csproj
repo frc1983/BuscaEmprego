@@ -207,6 +207,7 @@
     </Compile>
     <Compile Include="Helpers\DropDownHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BuscaViewModel.cs" />
     <Compile Include="Models\EnderecoViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

@@ -1,4 +1,5 @@
 ﻿using BuscaEmprego.Business;
+using BuscaEmprego.Entities;
 using BuscaEmprego.Enumerators;
 using BuscaEmprego.Models;
 using System;
@@ -13,9 +14,18 @@ namespace BuscaEmprego.Controllers
     {
         private int idVaga;
 
-        public ActionResult Buscar(string palavra)
+        public ActionResult Buscar(BuscaViewModel vm)
         {
-            return View();
+            var buscaBusiness = new VagasBusiness();
+            var vagas = buscaBusiness.ListaVagas(vm.TipoVaga, vm.Query);
+
+            if (vagas.Count > 0)
+                foreach (var vaga in vagas)
+                    vm.Vagas.Add(VagasViewModel.ParseEntityToVaga(vaga));
+            else
+                vm.Mensagem = "Nenhuma vaga foi encontrada com esses parâmetros.";
+
+            return View(vm);
         }
 
         public ActionResult Cadastrar(VagasViewModel vm)
@@ -31,8 +41,9 @@ namespace BuscaEmprego.Controllers
         public ActionResult Detalhes(int idVaga)
         {
             this.idVaga = idVaga;
+            Vaga vaga = VagasBusiness.BuscarVaga(idVaga);
 
-            return View(VagasViewModel.ParseEntityToVaga(this.idVaga));
+            return View(VagasViewModel.ParseEntityToVaga(vaga));
         }
 
         public ActionResult ListarCandidatos()
@@ -101,7 +112,8 @@ namespace BuscaEmprego.Controllers
 
                 return RedirectToAction("Detalhes", vm);
 
-            } else if (str.Equals("Remove"))
+            }
+            else if (str.Equals("Remove"))
             {
                 try
                 {
@@ -125,7 +137,8 @@ namespace BuscaEmprego.Controllers
 
                 return RedirectToAction("Buscar", vm);
 
-            } else if (str.Equals("Apply"))
+            }
+            else if (str.Equals("Apply"))
             {
                 try
                 {
