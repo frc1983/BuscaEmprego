@@ -11,8 +11,10 @@ namespace BuscaEmprego.Models
     {
         [Display(Name = "Tipo de Vaga")]
         public int TipoVaga { get; set; }
-        [Display(Name = "Palavras-chave")]
+
+        [Display(Name = "Palavra-chave")]
         public String Query { get; set; }
+
         public List<VagasViewModel> Vagas { get; set; }
 
         public BuscaViewModel()

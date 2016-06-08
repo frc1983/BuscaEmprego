@@ -12,6 +12,8 @@ namespace BuscaEmprego.Models
 {
     public class VagasViewModel : ResultadoViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         [Display(Name = "Descrição")]
         public string Descricao { get; set; }
@@ -53,9 +55,9 @@ namespace BuscaEmprego.Models
             return vaga;
         }
 
-        public static Vaga ParseVagaToEntityEditar(VagasViewModel vm, int idVaga)
+        public static Vaga ParseVagaToEntityEditar(VagasViewModel vm)
         {
-            Vaga vaga = VagasBusiness.BuscarVaga(idVaga);
+            Vaga vaga = VagasBusiness.BuscarVaga(vm.Id);
 
             Tipo tipo = TipoBusiness.BuscarTipoVaga((int)vm.TipoVaga);
             var salario = decimal.Parse(vm.Salario.Replace("R$", "").Replace(".", "").Trim());
@@ -73,6 +75,7 @@ namespace BuscaEmprego.Models
         {
             var vagasViewModel = new VagasViewModel()
             {
+                Id = vaga.Id,
                 Descricao = vaga.Descricao,
                 Salario = vaga.Salario.ToString(),
                 Beneficios = vaga.Beneficios,
@@ -84,10 +87,10 @@ namespace BuscaEmprego.Models
             return vagasViewModel;
         }
 
-        public static Vaga_Usuario ParseVagaToVagaUsuario(VagasViewModel vm, int idVaga)
+        public static Vaga_Usuario ParseVagaToVagaUsuario(VagasViewModel vm)
         {
             Usuario usuario = UsuarioBusiness.BuscarUsuario(vm.EmailEmpresa);
-            Vaga vaga = VagasBusiness.BuscarVaga(idVaga);
+            Vaga vaga = VagasBusiness.BuscarVaga(vm.Id);
 
             var vagaUsuario = new Vaga_Usuario()
             {

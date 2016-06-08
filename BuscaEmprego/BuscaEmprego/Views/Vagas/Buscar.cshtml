@@ -5,50 +5,61 @@
 @{
     ViewBag.Title = "Buscar Vagas";
 }
+
+<script type="text/javascript">
+    function detalhar(id) {
+        window.location = '@Url.Action("Detalhes", "Vagas")' + "?idVaga=" + id;
+    }
+</script>
+
 <h2>@ViewBag.Title</h2>
 <h3>@ViewBag.Message</h3>
 
 <p>Encontre vagas do Tipo e com as palavras-chave que deseja preenchendo o formulário abaixo.</p>
-@using (Html.BeginForm("Buscar", "Vagas", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Buscar", "Vagas", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-busca form-inline", role = "form" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     <div class="form-group">
-        @Html.LabelFor(m => m.TipoVaga, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(m => m.TipoVaga, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoVaga(),
+        @Html.LabelFor(m => m.TipoVaga, new { @class = "control-label" })
+        @Html.DropDownListFor(m => m.TipoVaga, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoVaga(),
            new { @class = "form-control" })
-        </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m => m.Query, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Query, String.Empty, new { @class = "form-control" })
-        </div>
+        @Html.LabelFor(m => m.Query, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Query, String.Empty, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Buscar" />
-        </div>
+        <input type="submit" class="btn btn-default" value="Buscar" />
     </div>
 }
-@if (Model.Vagas.Count == 0)
+@if (Model.CodigoResultado == BuscaEmprego.Enumerators.CodigoResultadoEnum.ERRO)
 {
     <div class="alert alert-danger">@Model.Mensagem</div>
 }
 else
 {
-    foreach (var vaga in Model.Vagas)
+    if (Model.Vagas.Count == 0)
     {
-        <div class="vaga-card w3-card-8">
-            @Html.Label(vaga.Descricao)<br>
-
-            <div class="col-md-offset-2 col-md-10">
-                <input type="button" class="btn btn-default" value="Detalhes" />
+        @Html.Label("Nenhuma vaga encontrada com esses parâmetros.")
+    }
+    else
+    {
+        <div class="card-columns">
+            @foreach (var vaga in Model.Vagas)
+            {
+            <div class="card">
+                <div class="card-header">@Html.Label(vaga.TipoVaga.ToString())</div>
+                <div class="card-block">
+                    <h4 class="card-title">@Html.Label(vaga.EmailEmpresa)</h4>
+                    <p class="card-text">@Html.Label(vaga.Descricao)</p>
+                    <a href="#" onclick='detalhar("@vaga.Id")' class="btn btn-primary">Detalhes</a>
+                </div>
             </div>
+            }
         </div>
     }
 }

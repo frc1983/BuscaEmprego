@@ -12,8 +12,6 @@ namespace BuscaEmprego.Controllers
 {
     public class VagasController : Controller
     {
-        private int idVaga;
-
         public ActionResult Buscar(BuscaViewModel vm)
         {
             var buscaBusiness = new VagasBusiness();
@@ -40,7 +38,6 @@ namespace BuscaEmprego.Controllers
 
         public ActionResult Detalhes(int idVaga)
         {
-            this.idVaga = idVaga;
             Vaga vaga = VagasBusiness.BuscarVaga(idVaga);
 
             return View(VagasViewModel.ParseEntityToVaga(vaga));
@@ -92,7 +89,7 @@ namespace BuscaEmprego.Controllers
                 try
                 {
                     var vagaBusiness = new VagasBusiness();
-                    vagaBusiness.EditarVaga(VagasViewModel.ParseVagaToEntityEditar(vm, idVaga));
+                    vagaBusiness.EditarVaga(VagasViewModel.ParseVagaToEntityEditar(vm));
 
                 }
                 catch (Exception e)
@@ -118,7 +115,7 @@ namespace BuscaEmprego.Controllers
                 try
                 {
                     var vagaBusiness = new VagasBusiness();
-                    vagaBusiness.RemoverVaga(idVaga);
+                    vagaBusiness.RemoverVaga(vm.Id);
                 }
                 catch (Exception e)
                 {
@@ -143,7 +140,7 @@ namespace BuscaEmprego.Controllers
                 try
                 {
                     var vagaBusiness = new VagasBusiness();
-                    vagaBusiness.CandidatarVaga(VagasViewModel.ParseVagaToVagaUsuario(vm, idVaga));
+                    vagaBusiness.CandidatarVaga(VagasViewModel.ParseVagaToVagaUsuario(vm));
                 }
                 catch (Exception e)
                 {

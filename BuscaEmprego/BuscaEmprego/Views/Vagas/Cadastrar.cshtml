@@ -19,6 +19,7 @@
         <div class="alert alert-success">@Model.Mensagem</div>
     }
 
+    @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.EmailEmpresa)
     <div class="form-group">
         @Html.LabelFor(m => m.Descricao, new { @class = "col-md-2 control-label" })
