@@ -80,17 +80,16 @@ namespace BuscaEmprego.Controllers
         {
             string str = Request.Params["btnDetalhe"];
 
-            if (str.Equals("Edit") &&
+            if (str.Equals("Editar") &&
                 (vm.Salario.Equals("R$ 0,00") || !vm.Salario.Contains("R$")))
                 ModelState.AddModelError("Salario", "O Salário deve ser preenchido corretamente. Formato R$ 0,00");
 
-            if (str.Equals("Edit"))
+            if (str.Equals("Editar"))
             {
                 try
                 {
                     var vagaBusiness = new VagasBusiness();
                     vagaBusiness.EditarVaga(VagasViewModel.ParseVagaToEntityEditar(vm));
-
                 }
                 catch (Exception e)
                 {
@@ -110,7 +109,7 @@ namespace BuscaEmprego.Controllers
                 return RedirectToAction("Detalhes", vm);
 
             }
-            else if (str.Equals("Remove"))
+            else if (str.Equals("Excluir"))
             {
                 try
                 {
@@ -133,9 +132,8 @@ namespace BuscaEmprego.Controllers
                 vm.Mensagem = "Vaga excluída com sucesso";
 
                 return RedirectToAction("Buscar", vm);
-
             }
-            else if (str.Equals("Apply"))
+            else if (str.Equals("Salvar"))
             {
                 try
                 {

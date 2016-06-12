@@ -23,34 +23,24 @@
     @Html.HiddenFor(m => m.EmailEmpresa)
     <div class="form-group">
         @Html.LabelFor(m => m.Descricao, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(m => m.Descricao, new { @class = "form-control", maxlength = 255, WebGridColumn = 10, WebGridRow = 10 })
-        </div>
+        @Html.TextAreaFor(m => m.Descricao, new { @class = "form-control", maxlength = 255, WebGridColumn = 10, WebGridRow = 10 })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Salario, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Salario, new { @class = "form-control", Value = String.Format("{0:C}", 0) })
-        </div>
+        @Html.TextBoxFor(m => m.Salario, new { @class = "form-control", Value = String.Format("{0:C}", 0) })
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Beneficios, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(m => m.Beneficios, new { @class = "form-control", maxlength = 255, WebGridColumn = 10, WebGridRow = 10 })
-        </div>
+        @Html.TextAreaFor(m => m.Beneficios, new { @class = "form-control", maxlength = 255, WebGridColumn = 10, WebGridRow = 10 })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.TipoVaga, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(m => m.TipoVaga, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoVaga(),
+        @Html.DropDownListFor(m => m.TipoVaga, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoVaga(),
            new { @class = "form-control", id = "vaga-tipo" })
-        </div>
     </div>
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
+        <input type="submit" class="btn btn-default" value="Register" />
     </div>
 }
 

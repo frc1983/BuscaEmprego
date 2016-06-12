@@ -14,86 +14,60 @@
 
     <h4>Dados Pessoais</h4>
     <div class="form-group">
-        @Html.LabelFor(m => m.TipoUsuario, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(m => m.TipoUsuario, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoUsuario(), 
+        @Html.LabelFor(m => m.TipoUsuario, new { @class = "control-label" })
+        @Html.DropDownListFor(m => m.TipoUsuario, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoUsuario(),
            new { @class = "form-control", id = "usuario-tipo" })
-        </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Nome, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Nome, new { @class = "form-control" })
-        </div>
+        @Html.LabelFor(m => m.Nome, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Nome, new { @class = "form-control" })
     </div>
     <div class="form-group" id="usuario-cpf-control">
-        @Html.LabelFor(m => m.CPF, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.CPF, new { @class = "form-control", id = "usuario-cpf", maxlength = 11 })
-        </div>
+        @Html.LabelFor(m => m.CPF, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.CPF, new { @class = "form-control", id = "usuario-cpf", maxlength = 11 })
     </div>
     <div class="form-group" id="usuario-cnpj-control">
-        @Html.LabelFor(m => m.CNPJ, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.CNPJ, new { @class = "form-control", id = "usuario-cnpj", maxlength = 14 })
-        </div>
+        @Html.LabelFor(m => m.CNPJ, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.CNPJ, new { @class = "form-control", id = "usuario-cnpj", maxlength = 14 })
     </div>
 
     <h4>Dados de Localização</h4>
     <div class="form-group">
-        @Html.LabelFor(m => m.Endereco.CEP, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Endereco.CEP, new { @class = "form-control" })
-        </div>
+        @Html.LabelFor(m => m.Endereco.CEP, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Endereco.CEP, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Endereco.Logradouro, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Endereco.Logradouro, new { @class = "form-control" })
-        </div>
+        @Html.LabelFor(m => m.Endereco.Logradouro, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Endereco.Logradouro, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Endereco.Complemento, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Endereco.Complemento, new { @class = "form-control" })
-        </div>
+        @Html.LabelFor(m => m.Endereco.Complemento, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Endereco.Complemento, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Endereco.Tipo, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Endereco.Tipo, new { @class = "form-control" })
-        </div>
+        @Html.LabelFor(m => m.Endereco.Tipo, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Endereco.Tipo, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Endereco.Telefone, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Endereco.Telefone, new { @class = "form-control" })
-        </div>
+        @Html.LabelFor(m => m.Endereco.Telefone, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Endereco.Telefone, new { @class = "form-control" })
     </div>
 
     <h4>Dados de Acesso</h4>
     <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        </div>
+        @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
+        @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
     </div>
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
+        <input type="submit" class="btn btn-default" value="Register" />
     </div>
 }
 
