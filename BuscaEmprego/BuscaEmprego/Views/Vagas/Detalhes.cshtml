@@ -38,6 +38,13 @@
         @Html.DropDownListFor(m => m.TipoVaga, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoVaga(),
            new { @class = "form-control", id = "vaga-tipo" })
     </div>
+    foreach (var perfil in Model.ListaPerfil)
+    {
+    <div class="form-group">
+        @Html.RadioButtonFor(x => x.ListaPerfilSelecionado, perfil, new { @class = "form-control", id = "vaga-perfil" })
+        @Html.Label(perfil.Nome, new { @class = "col-md-2 control-label" })
+    </div>
+    }
     <div class="form-group">
         <input type="submit" name="btnDetalhe" class="btn btn-default" value="Editar" />
         <input type="submit" name="btnDetalhe" class="btn btn-default" value="Excluir" />

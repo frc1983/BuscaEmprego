@@ -58,7 +58,7 @@ namespace BuscaEmprego.DAO
 
                 return retorno;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw new DAOException("Erro ao buscar vagas.");
             }

@@ -35,6 +35,10 @@ namespace BuscaEmprego.Models
 
         public String EmailEmpresa { get; set; }
 
+        public List<Perfil> ListaPerfil { get; set; }
+
+        public List<Perfil> ListaPerfilSelecionado { get; set; }
+
         public static Vaga ParseVagaToEntity(VagasViewModel vm)
         {
             Empresa empresa = EmpresaBusiness.BuscarEmpresa(vm.EmailEmpresa);
@@ -71,7 +75,7 @@ namespace BuscaEmprego.Models
             return vaga;
         }
 
-        public static VagasViewModel ParseEntityToVaga(Vaga vaga)
+        public static VagasViewModel ParseEntityToVaga(Vaga vaga, List<Perfil> perfis)
         {
             var vagasViewModel = new VagasViewModel()
             {
@@ -81,7 +85,9 @@ namespace BuscaEmprego.Models
                 Beneficios = vaga.Beneficios,
                 TipoVaga = vaga.Tipo_Id == 1 ? EnumTipoVaga.Emprego : EnumTipoVaga.Estágio,
                 Ativa = vaga.Ativa,
-                EmailEmpresa = new EmpresaBusiness().BuscaEmpresa(vaga.Empresa_Id).Email
+                EmailEmpresa = new EmpresaBusiness().BuscaEmpresa(vaga.Empresa_Id).Email,
+                ListaPerfil = perfis == null ? new List<Perfil>() : perfis,
+                ListaPerfilSelecionado = vaga.Perfil.ToList()
             };
 
             return vagasViewModel;
