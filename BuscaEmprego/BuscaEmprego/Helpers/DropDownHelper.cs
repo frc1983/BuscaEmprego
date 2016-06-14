@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BuscaEmprego.Business;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -22,6 +23,18 @@ namespace BuscaEmprego.Helpers
             List<SelectListItem> list = new List<SelectListItem>();
             list.Add(new SelectListItem() { Text = "Emprego", Value = "1" });
             list.Add(new SelectListItem() { Text = "Estágio", Value = "2" });
+
+            return list;
+        }
+
+        public static IEnumerable<SelectListItem> GetDropdownPerfil()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            var daoPerfil = new PerfilBusiness().Listar();
+            foreach (var perfil in daoPerfil)
+            {
+                list.Add(new SelectListItem() { Text = perfil.Nome, Value = perfil.Id.ToString() });
+            }
 
             return list;
         }

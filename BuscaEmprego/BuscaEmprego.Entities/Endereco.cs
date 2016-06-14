@@ -19,14 +19,12 @@ namespace BuscaEmprego.Entities
         [Required]
         [StringLength(255)]
         public string Logradouro { get; set; }
-
-        [Required]
+        
         [StringLength(255)]
         public string Complemento { get; set; }
 
         public int CEP { get; set; }
-
-        [Required]
+        
         [StringLength(255)]
         public string Tipo { get; set; }
 

@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAOException.cs" />
+    <Compile Include="PerfilDAO.cs" />
     <Compile Include="TipoDAO.cs" />
     <Compile Include="VagaDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

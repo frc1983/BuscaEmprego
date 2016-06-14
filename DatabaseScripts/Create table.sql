@@ -18,9 +18,9 @@ CREATE TABLE Empresa (
 CREATE TABLE Endereco (
     Id int NOT NULL IDENTITY(1,1),
     Logradouro varchar(255) NOT NULL,
-    Complemento varchar(255) NOT NULL,
+    Complemento varchar(255) NULL,
     CEP int NOT NULL,
-    Tipo varchar(255) NOT NULL,
+    Tipo varchar(255) NULL,
     Telefone bigint NOT NULL,
     CONSTRAINT Endereco_pk PRIMARY KEY (Id)
 );
@@ -137,5 +137,11 @@ ALTER TABLE Vaga ADD CONSTRAINT Vaga_Vaga_Tipo FOREIGN KEY (Tipo_Id)
 
 INSERT INTO Tipo (Tipo) VALUES ('Empresa')
 INSERT INTO Tipo (Tipo) VALUES ('Estágio')
+
+INSERT INTO Perfil (Nome) VALUES ('TI')
+INSERT INTO Perfil (Nome) VALUES ('Serviços Gerais')
+INSERT INTO Perfil (Nome) VALUES ('Engenharia Elétrica')
+INSERT INTO Perfil (Nome) VALUES ('Telecomunicações')
+INSERT INTO Perfil (Nome) VALUES ('Eletrônica')
 -- End of file.
 rollback

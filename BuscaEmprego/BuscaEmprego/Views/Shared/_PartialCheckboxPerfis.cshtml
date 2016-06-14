@@ -1,0 +1,14 @@
+﻿@model BuscaEmprego.Models.UsuarioViewModel
+
+<h4>Dados de Perfil</h4>
+<div class="form-group">
+    @for (int i = 0; i < Model.Perfis.Count; i++)
+    {
+        <div>
+            @Html.HiddenFor(x => x.Perfis[i].Value)
+            @Html.CheckBoxFor(x => x.Perfis[i].Checked)
+            @Html.LabelFor(x => x.Perfis[i].Checked, Model.Perfis[i].Name)
+        </div>
+    }
+</div>
+

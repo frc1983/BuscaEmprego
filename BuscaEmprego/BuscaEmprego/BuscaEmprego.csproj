@@ -211,6 +211,7 @@
     <Compile Include="Models\EnderecoViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PerfilViewModel.cs" />
     <Compile Include="Models\ResultadoViewModel.cs" />
     <Compile Include="Models\VagasViewModel.cs" />
     <Compile Include="Models\UsuarioViewModel.cs" />
@@ -276,6 +277,7 @@
     <Content Include="Views\Vagas\Cadastrar.cshtml" />
     <Content Include="Views\Vagas\Detalhes.cshtml" />
     <Content Include="Views\Vagas\ListarCandidatos.cshtml" />
+    <Content Include="Views\Shared\_PartialCheckboxPerfis.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
