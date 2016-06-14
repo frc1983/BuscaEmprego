@@ -33,11 +33,9 @@ namespace BuscaEmprego.Entities
         public string Senha { get; set; }
 
         public virtual Endereco Endereco { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        
         public virtual ICollection<Vaga_Usuario> Vaga_Usuario { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        
         public virtual ICollection<Perfil> Perfil { get; set; }
     }
 }

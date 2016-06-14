@@ -16,7 +16,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.TipoUsuario, new { @class = "control-label" })
         @Html.DropDownListFor(m => m.TipoUsuario, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoUsuario(),
-           new { @class = "form-control", id = "usuario-tipo" })
+        new { @class = "form-control", id = "usuario-tipo" })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Nome, new { @class = "control-label" })
@@ -53,24 +53,28 @@
         @Html.TextBoxFor(m => m.Endereco.Telefone, new { @class = "form-control" })
     </div>
 
-    Html.RenderPartial("~/Views/Shared/_PartialCheckboxPerfis.cshtml", Model);
+    <div id="dados-perfil">
+        @{ 
+            Html.RenderPartial("~/Views/Shared/_PartialCheckboxPerfis.cshtml", Model);
+        }
+    </div>
 
     <h4>Dados de Acesso</h4>
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "control-label" })
         @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "control-label" })
-        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
-        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        <input type="submit" class="btn btn-default" value="Registrar" />
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-default" value="Registrar" />
+        </div>
 }
 
 @section Scripts {
@@ -86,9 +90,11 @@
         if ($(this).val() == "Usuario") {
             $("#usuario-cpf-control").show();
             $("#usuario-cnpj-control").hide();
+            $("#dados-perfil").show();
         } else {
             $("#usuario-cpf-control").hide();
             $("#usuario-cnpj-control").show();
+            $("#dados-perfil").hide();
         }
     });
 </script>

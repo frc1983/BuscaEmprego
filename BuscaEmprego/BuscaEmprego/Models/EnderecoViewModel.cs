@@ -27,7 +27,7 @@ namespace BuscaEmprego.Models
 
         public static Endereco ParseEnderecoToEntity(EnderecoViewModel vm)
         {
-            return new Endereco()
+            var end = new Endereco()
             {
                 CEP = vm.CEP,
                 Complemento = vm.Complemento,
@@ -35,6 +35,8 @@ namespace BuscaEmprego.Models
                 Telefone = vm.Telefone,
                 Tipo = vm.Tipo,
             };
+
+            return end;
         }
     }
 }

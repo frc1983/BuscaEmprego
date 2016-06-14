@@ -49,120 +49,47 @@ namespace BuscaEmprego.Controllers
             return View();
         }
 
-        public ActionResult SalvarVaga(VagasViewModel vm)
+        public ActionResult EditarVaga(VagasViewModel vm)
         {
+            string str = Request.Params["btnDetalhe"];
+            var vagaBusiness = new VagasBusiness();
+
             if (vm.Salario.Equals("R$ 0,00") || !vm.Salario.Contains("R$"))
                 ModelState.AddModelError("Salario", "O Salário deve ser preenchido corretamente. Formato R$ 0,00");
 
             try
             {
-                var vagaBusiness = new VagasBusiness();
-                vagaBusiness.RegistraVaga(VagasViewModel.ParseVagaToEntity(vm));
-            }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("Vagas", e.Message);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                vm.CodigoResultado = CodigoResultadoEnum.ERRO;
-                return View("Cadastrar", vm);
-            }
-
-            vm = new VagasViewModel();
-            vm.CodigoResultado = CodigoResultadoEnum.OK;
-            vm.Mensagem = "Vaga cadastrada com sucesso";
-
-            return RedirectToAction("Cadastrar", vm);
-        }
-
-        public ActionResult EditarVaga(VagasViewModel vm)
-        {
-            string str = Request.Params["btnDetalhe"];
-
-            if (str.Equals("Editar") &&
-                (vm.Salario.Equals("R$ 0,00") || !vm.Salario.Contains("R$")))
-                ModelState.AddModelError("Salario", "O Salário deve ser preenchido corretamente. Formato R$ 0,00");
-
-            if (str.Equals("Editar"))
-            {
-                try
+                if (str.Equals("Editar"))
                 {
-                    var vagaBusiness = new VagasBusiness();
                     vagaBusiness.EditarVaga(VagasViewModel.ParseVagaToEntityEditar(vm));
+
+                    vm = new VagasViewModel();
                 }
-                catch (Exception e)
-                {
-                    ModelState.AddModelError("Vagas", e.Message);
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    vm.CodigoResultado = CodigoResultadoEnum.ERRO;
-                    return View("Detalhes", vm);
-                }
-
-                vm = new VagasViewModel();
-                vm.CodigoResultado = CodigoResultadoEnum.OK;
-                vm.Mensagem = "Vaga editada com sucesso";
-
-                return RedirectToAction("Detalhes", vm);
-
-            }
-            else if (str.Equals("Excluir"))
-            {
-                try
-                {
-                    var vagaBusiness = new VagasBusiness();
+                else if (str.Equals("Excluir"))
                     vagaBusiness.RemoverVaga(vm.Id);
-                }
-                catch (Exception e)
-                {
-                    ModelState.AddModelError("Vagas", e.Message);
-                }
+                else if (str.Equals("Salvar"))
+                    vagaBusiness.RegistraVaga(VagasViewModel.ParseVagaToEntity(vm));
 
                 if (!ModelState.IsValid)
                 {
                     vm.CodigoResultado = CodigoResultadoEnum.ERRO;
-                    return View("Buscar", vm);
-                }
-
-                vm = new VagasViewModel();
-                vm.CodigoResultado = CodigoResultadoEnum.OK;
-                vm.Mensagem = "Vaga excluída com sucesso";
-
-                return RedirectToAction("Buscar", vm);
-            }
-            else if (str.Equals("Salvar"))
-            {
-                try
-                {
-                    var vagaBusiness = new VagasBusiness();
-                    vagaBusiness.CandidatarVaga(VagasViewModel.ParseVagaToVagaUsuario(vm));
-                }
-                catch (Exception e)
-                {
-                    ModelState.AddModelError("Vagas", e.Message);
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    vm.CodigoResultado = CodigoResultadoEnum.ERRO;
-                    return View("Detalhes", vm);
+                    vm.Mensagem = "Ocorreu um erro";
+                    return View("Cadastrar", vm);
                 }
 
                 vm = new VagasViewModel();
                 vm.CodigoResultado = CodigoResultadoEnum.OK;
                 vm.Mensagem = "Candidatura realizada com sucesso";
 
-                return RedirectToAction("Detalhes", vm);
+                return View("Cadastrar", vm);
             }
-
-            vm.CodigoResultado = CodigoResultadoEnum.ERRO;
-            vm.Mensagem = "Ocorreu um erro";
-
-            return RedirectToAction("Detalhes", vm);
+            catch (Exception e)
+            {
+                ModelState.AddModelError("Vagas", e.Message);
+                vm.CodigoResultado = CodigoResultadoEnum.ERRO;
+                vm.Mensagem = "Ocorreu um erro";
+                return View("Cadastrar", vm);
+            }
         }
     }
 }

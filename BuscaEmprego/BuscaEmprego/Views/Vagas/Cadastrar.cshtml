@@ -5,10 +5,17 @@
 <h2>@ViewBag.Title</h2>
 <h3>@ViewBag.Message</h3>
 
-@using (Html.BeginForm("SalvarVaga", "Vagas", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("EditarVaga", "Vagas", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Criar uma vaga no BuscaEmprego</h4>
+    if (Model.Id == 0)
+    {
+        <h4>Criar uma vaga no BuscaEmprego</h4>
+    }
+    else
+    {
+        <h4>Alterar uma vaga no BuscaEmprego</h4>
+    }
     <hr />
     if (Model.CodigoResultado == BuscaEmprego.Enumerators.CodigoResultadoEnum.ERRO)
     {
@@ -39,8 +46,16 @@
         @Html.DropDownListFor(m => m.TipoVaga, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoVaga(),
            new { @class = "form-control", id = "vaga-tipo" })
     </div>
-    <div class="form-group">
-        <input type="submit" class="btn btn-default" value="Register" />
+    <div class="form-group">        
+        @if (Model.Id == 0)
+        {
+            <input type="submit" name="btnDetalhe" class="btn btn-default" value="Salvar" />
+        }
+        else
+        {
+            <input type="submit" name="btnDetalhe" class="btn btn-default" value="Excluir" />
+            <input type="submit" name="btnDetalhe" class="btn btn-default" value="Editar" />
+        }
     </div>
 }
 

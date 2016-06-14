@@ -20,8 +20,6 @@ namespace BuscaEmprego.Business
             try
             {
                 var perfis = new PerfilDAO().BuscarPerfis();
-                if (perfis ==  null || perfis.Count() == 0)
-                    throw new BusinessException("Nenhum perfil encontrado.");
 
                 return perfis;
             }
