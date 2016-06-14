@@ -30,7 +30,7 @@ namespace BuscaEmprego.Helpers
         public static IEnumerable<SelectListItem> GetDropdownPerfil()
         {
             List<SelectListItem> list = new List<SelectListItem>();
-            var daoPerfil = new PerfilBusiness().Listar();
+            var daoPerfil = new PerfilBusiness().BuscarPerfis();
             foreach (var perfil in daoPerfil)
             {
                 list.Add(new SelectListItem() { Text = perfil.Nome, Value = perfil.Id.ToString() });

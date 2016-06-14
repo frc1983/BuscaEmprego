@@ -10,14 +10,25 @@ namespace BuscaEmprego.Business
 {
     public class PerfilBusiness
     {
-        public List<Perfil> Listar()
-        {
-            return new PerfilDAO().Listar();
-        }
-
         public Perfil GetById(int idv)
         {
             return new PerfilDAO().GetById(idv);
+        }
+
+        public List<Perfil> BuscarPerfis()
+        {
+            try
+            {
+                var perfis = new PerfilDAO().BuscarPerfis();
+                if (perfis ==  null || perfis.Count() == 0)
+                    throw new BusinessException("Nenhum perfil encontrado.");
+
+                return perfis;
+            }
+            catch (DAOException e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

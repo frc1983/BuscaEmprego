@@ -19,7 +19,7 @@ namespace BuscaEmprego.Controllers
 
             if (vagas.Count > 0)
                 foreach (var vaga in vagas)
-                    vm.Vagas.Add(VagasViewModel.ParseEntityToVaga(vaga));
+                    vm.Vagas.Add(VagasViewModel.ParseEntityToVaga(vaga, null));
             else
                 vm.Mensagem = "Nenhuma vaga foi encontrada com esses parâmetros.";
 
@@ -39,8 +39,9 @@ namespace BuscaEmprego.Controllers
         public ActionResult Detalhes(int idVaga)
         {
             Vaga vaga = VagasBusiness.BuscarVaga(idVaga);
+            List<Perfil> perfis = new PerfilBusiness().BuscarPerfis();
 
-            return View(VagasViewModel.ParseEntityToVaga(vaga));
+            return View(VagasViewModel.ParseEntityToVaga(vaga, perfis));
         }
 
         public ActionResult ListarCandidatos()

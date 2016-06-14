@@ -9,19 +9,26 @@ namespace BuscaEmprego.DAO
 {
     public class PerfilDAO
     {
-        public List<Perfil> Listar()
-        {
-            using (var db = new BuscaEmprego())
-            {
-                return db.Perfil.ToList();
-            }
-        }
-
         public Perfil GetById(int id)
         {
             using (var db = new BuscaEmprego())
             {
                 return db.Perfil.Where(x => x.Id == id).FirstOrDefault();
+            }
+        }
+
+        public List<Perfil> BuscarPerfis()
+        {
+            try
+            {
+                using (var db = new BuscaEmprego())
+                {
+                    return db.Perfil.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new DAOException("Erro ao buscar perfis.");
             }
         }
     }

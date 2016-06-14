@@ -15,7 +15,7 @@ namespace BuscaEmprego.Models
         {
             Perfis = new List<PerfilViewModel>();
 
-            var perfis = new PerfilBusiness().Listar();
+            var perfis = new PerfilBusiness().BuscarPerfis();
             foreach (var item in perfis)
                 Perfis.Add(new PerfilViewModel() { Checked = false, Name = item.Nome, Value = item.Id.ToString() });
 
