@@ -1,19 +1,5 @@
 begin transaction
 
-CREATE DATABASE BuscaEmprego
-GO
--- tables
--- Table: Empresa
-CREATE TABLE Empresa (
-    Id int NOT NULL IDENTITY(1,1),
-    Endereco_Id int NOT NULL,
-    CNPJ bigint NOT NULL,
-	Email varchar(255) NOT NULL,
-    Nome varchar(255) NOT NULL,
-	Senha varchar(255) NOT NULL,
-    CONSTRAINT PK_Id PRIMARY KEY (Id)
-);
-
 -- Table: Endereco
 CREATE TABLE Endereco (
     Id int NOT NULL IDENTITY(1,1),
@@ -39,11 +25,18 @@ CREATE TABLE Tipo (
     CONSTRAINT Tipo_pk PRIMARY KEY (Id)
 );
 
+CREATE TABLE Tipo_Usuario (
+    Id int NOT NULL IDENTITY(1,1),
+    Tipo varchar(255) NOT NULL,
+    CONSTRAINT Tipo_usuario_pk PRIMARY KEY (Id)
+);
+
 -- Table: Usuario
 CREATE TABLE Usuario (
     Id int NOT NULL IDENTITY(1,1),
     Endereco_Id int NOT NULL,
-    CPF bigint NOT NULL,
+    Tipo_Usuario_Id int NOT NULL,
+    CPF_CNPJ varchar(14) NOT NULL,
 	Email varchar(255) NOT NULL,
     Nome varchar(255) NOT NULL,
 	Senha varchar(255) NOT NULL,
@@ -90,20 +83,10 @@ CREATE TABLE Vaga_Usuario (
     CONSTRAINT Vaga_Usuario_pk PRIMARY KEY (Vaga_Id,Usuario_Id)
 );
 
--- foreign keys
--- Reference: Empresa_Endereco (table: Empresa)
-ALTER TABLE Empresa ADD CONSTRAINT Empresa_Endereco FOREIGN KEY (Endereco_Id)
-    REFERENCES Endereco (Id)
-    ON DELETE CASCADE;
-
 -- Reference: Usuario_Endereco (table: Usuario)
 ALTER TABLE Usuario ADD CONSTRAINT Usuario_Endereco FOREIGN KEY (Endereco_Id)
     REFERENCES Endereco (Id)
 	ON DELETE CASCADE;
-
--- Reference: Usuario_Perfil_Perfil (table: Usuario_Perfil)
-ALTER TABLE Usuario_Perfil ADD CONSTRAINT Usuario_Perfil_Perfil FOREIGN KEY (Perfil_Id)
-    REFERENCES Perfil (Id);
 
 -- Reference: Usuario_Perfil_Usuario (table: Usuario_Perfil)
 ALTER TABLE Usuario_Perfil ADD CONSTRAINT Usuario_Perfil_Usuario FOREIGN KEY (Usuario_Id)
@@ -112,11 +95,7 @@ ALTER TABLE Usuario_Perfil ADD CONSTRAINT Usuario_Perfil_Usuario FOREIGN KEY (Us
 
 -- Reference: Vaga_Empresa (table: Vaga)
 ALTER TABLE Vaga ADD CONSTRAINT Vaga_Empresa FOREIGN KEY (Empresa_Id)
-    REFERENCES Empresa (Id);
-
--- Reference: Vaga_Perfil_Perfil (table: Vaga_Perfil)
-ALTER TABLE Vaga_Perfil ADD CONSTRAINT Vaga_Perfil_Perfil FOREIGN KEY (Perfil_Id)
-    REFERENCES Perfil (Id);
+    REFERENCES Usuario (Id);
 
 -- Reference: Vaga_Perfil_Vaga (table: Vaga_Perfil)
 ALTER TABLE Vaga_Perfil ADD CONSTRAINT Vaga_Perfil_Vaga FOREIGN KEY (Vaga_Id)
@@ -134,9 +113,15 @@ ALTER TABLE Vaga_Usuario ADD CONSTRAINT Vaga_Usuario_Vaga FOREIGN KEY (Vaga_Id)
 -- Reference: Vaga_Vaga_Tipo (table: Vaga)
 ALTER TABLE Vaga ADD CONSTRAINT Vaga_Vaga_Tipo FOREIGN KEY (Tipo_Id)
     REFERENCES Tipo (Id);
+    
+ALTER TABLE Usuario ADD CONSTRAINT Usuario_Usuario_Tipo FOREIGN KEY (Tipo_Usuario_Id)
+    REFERENCES Tipo_Usuario (Id);
 
 INSERT INTO Tipo (Tipo) VALUES ('Empresa')
 INSERT INTO Tipo (Tipo) VALUES ('Estágio')
+
+INSERT INTO Tipo_Usuario (Tipo) VALUES ('Empresa')
+INSERT INTO Tipo_Usuario (Tipo) VALUES ('Candidato')
 
 INSERT INTO Perfil (Nome) VALUES ('TI')
 INSERT INTO Perfil (Nome) VALUES ('Serviços Gerais')
@@ -144,4 +129,4 @@ INSERT INTO Perfil (Nome) VALUES ('Engenharia Elétrica')
 INSERT INTO Perfil (Nome) VALUES ('Telecomunicações')
 INSERT INTO Perfil (Nome) VALUES ('Eletrônica')
 -- End of file.
-rollback
+commit

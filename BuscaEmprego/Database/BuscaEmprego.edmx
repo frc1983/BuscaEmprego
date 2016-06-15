@@ -1,0 +1,595 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BuscaEmpregoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Endereco">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Logradouro" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Complemento" Type="varchar" MaxLength="255" />
+          <Property Name="CEP" Type="int" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="255" />
+          <Property Name="Telefone" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Perfil">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tipo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tipo_Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Endereco_Id" Type="int" Nullable="false" />
+          <Property Name="Tipo_Usuario_Id" Type="int" Nullable="false" />
+          <Property Name="CPF_CNPJ" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Senha" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario_Perfil">
+          <Key>
+            <PropertyRef Name="Perfil_Id" />
+            <PropertyRef Name="Usuario_Id" />
+          </Key>
+          <Property Name="Perfil_Id" Type="int" Nullable="false" />
+          <Property Name="Usuario_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vaga">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Empresa_Id" Type="int" Nullable="false" />
+          <Property Name="Tipo_Id" Type="int" Nullable="false" />
+          <Property Name="Descricao" Type="text" Nullable="false" />
+          <Property Name="Salario" Type="decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="Beneficios" Type="text" Nullable="false" />
+          <Property Name="Ativa" Type="bit" Nullable="false" />
+          <Property Name="Data_Cadastro" Type="date" Nullable="false" />
+          <Property Name="Data_Preenchimento_Vaga" Type="date" />
+          <Property Name="Data_Cancelamento" Type="date" />
+          <Property Name="Data_Ativacao" Type="date" />
+        </EntityType>
+        <EntityType Name="Vaga_Perfil">
+          <Key>
+            <PropertyRef Name="Vaga_Id" />
+            <PropertyRef Name="Perfil_Id" />
+          </Key>
+          <Property Name="Vaga_Id" Type="int" Nullable="false" />
+          <Property Name="Perfil_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vaga_Usuario">
+          <Key>
+            <PropertyRef Name="Vaga_Id" />
+            <PropertyRef Name="Usuario_Id" />
+          </Key>
+          <Property Name="Vaga_Id" Type="int" Nullable="false" />
+          <Property Name="Usuario_Id" Type="int" Nullable="false" />
+          <Property Name="Aprovado" Type="bit" Nullable="false" />
+          <Property Name="Data_Candidatura" Type="date" Nullable="false" />
+          <Property Name="Data_Aprovacao" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="Usuario_Endereco">
+          <End Role="Endereco" Type="Self.Endereco" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Endereco">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="Endereco_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Usuario_Perfil_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usuario_Perfil" Type="Self.Usuario_Perfil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario_Perfil">
+              <PropertyRef Name="Usuario_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Usuario_Usuario_Tipo">
+          <End Role="Tipo_Usuario" Type="Self.Tipo_Usuario" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="Tipo_Usuario_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Vaga_Empresa">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Vaga" Type="Self.Vaga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vaga">
+              <PropertyRef Name="Empresa_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Vaga_Perfil_Vaga">
+          <End Role="Vaga" Type="Self.Vaga" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Vaga_Perfil" Type="Self.Vaga_Perfil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vaga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vaga_Perfil">
+              <PropertyRef Name="Vaga_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Vaga_Usuario_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Vaga_Usuario" Type="Self.Vaga_Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vaga_Usuario">
+              <PropertyRef Name="Usuario_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Vaga_Usuario_Vaga">
+          <End Role="Vaga" Type="Self.Vaga" Multiplicity="1" />
+          <End Role="Vaga_Usuario" Type="Self.Vaga_Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vaga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vaga_Usuario">
+              <PropertyRef Name="Vaga_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Vaga_Vaga_Tipo">
+          <End Role="Tipo" Type="Self.Tipo" Multiplicity="1" />
+          <End Role="Vaga" Type="Self.Vaga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vaga">
+              <PropertyRef Name="Tipo_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BuscaEmpregoModelStoreContainer">
+          <EntitySet Name="Endereco" EntityType="Self.Endereco" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tipo" EntityType="Self.Tipo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tipo_Usuario" EntityType="Self.Tipo_Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario_Perfil" EntityType="Self.Usuario_Perfil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vaga" EntityType="Self.Vaga" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vaga_Perfil" EntityType="Self.Vaga_Perfil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vaga_Usuario" EntityType="Self.Vaga_Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Usuario_Endereco" Association="Self.Usuario_Endereco">
+            <End Role="Endereco" EntitySet="Endereco" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="Usuario_Perfil_Usuario" Association="Self.Usuario_Perfil_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Usuario_Perfil" EntitySet="Usuario_Perfil" />
+          </AssociationSet>
+          <AssociationSet Name="Usuario_Usuario_Tipo" Association="Self.Usuario_Usuario_Tipo">
+            <End Role="Tipo_Usuario" EntitySet="Tipo_Usuario" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="Vaga_Empresa" Association="Self.Vaga_Empresa">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Vaga" EntitySet="Vaga" />
+          </AssociationSet>
+          <AssociationSet Name="Vaga_Perfil_Vaga" Association="Self.Vaga_Perfil_Vaga">
+            <End Role="Vaga" EntitySet="Vaga" />
+            <End Role="Vaga_Perfil" EntitySet="Vaga_Perfil" />
+          </AssociationSet>
+          <AssociationSet Name="Vaga_Usuario_Usuario" Association="Self.Vaga_Usuario_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Vaga_Usuario" EntitySet="Vaga_Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="Vaga_Usuario_Vaga" Association="Self.Vaga_Usuario_Vaga">
+            <End Role="Vaga" EntitySet="Vaga" />
+            <End Role="Vaga_Usuario" EntitySet="Vaga_Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="Vaga_Vaga_Tipo" Association="Self.Vaga_Vaga_Tipo">
+            <End Role="Tipo" EntitySet="Tipo" />
+            <End Role="Vaga" EntitySet="Vaga" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BuscaEmpregoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Endereco">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Logradouro" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Complemento" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CEP" Type="Int32" Nullable="false" />
+          <Property Name="Tipo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Telefone" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.Usuario_Endereco" FromRole="Endereco" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Perfil">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="BuscaEmpregoModel.Usuario_Perfil1" FromRole="Perfil" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Tipo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tipo1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Vaga" Relationship="Self.Vaga_Vaga_Tipo" FromRole="Tipo" ToRole="Vaga" />
+        </EntityType>
+        <EntityType Name="Tipo_Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tipo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.Usuario_Usuario_Tipo" FromRole="Tipo_Usuario" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Endereco_Id" Type="Int32" Nullable="false" />
+          <Property Name="Tipo_Usuario_Id" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nome" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Senha" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Endereco" Relationship="Self.Usuario_Endereco" FromRole="Usuario" ToRole="Endereco" />
+          <NavigationProperty Name="Tipo_Usuario" Relationship="Self.Usuario_Usuario_Tipo" FromRole="Usuario" ToRole="Tipo_Usuario" />
+          <NavigationProperty Name="Vaga" Relationship="Self.Vaga_Empresa" FromRole="Usuario" ToRole="Vaga" />
+          <NavigationProperty Name="Vaga_Usuario" Relationship="Self.Vaga_Usuario_Usuario" FromRole="Usuario" ToRole="Vaga_Usuario" />
+          <NavigationProperty Name="Perfil" Relationship="BuscaEmpregoModel.Usuario_Perfil1" FromRole="Usuario" ToRole="Perfil" />
+          <Property Name="CPF_CNPJ" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Vaga">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Empresa_Id" Type="Int32" Nullable="false" />
+          <Property Name="Tipo_Id" Type="Int32" Nullable="false" />
+          <Property Name="Descricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Salario" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="Beneficios" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ativa" Type="Boolean" Nullable="false" />
+          <Property Name="Data_Cadastro" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Data_Preenchimento_Vaga" Type="DateTime" Precision="0" />
+          <Property Name="Data_Cancelamento" Type="DateTime" Precision="0" />
+          <Property Name="Data_Ativacao" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Tipo" Relationship="Self.Vaga_Vaga_Tipo" FromRole="Vaga" ToRole="Tipo" />
+          <NavigationProperty Name="Usuario" Relationship="Self.Vaga_Empresa" FromRole="Vaga" ToRole="Usuario" />
+          <NavigationProperty Name="Vaga_Perfil" Relationship="Self.Vaga_Perfil_Vaga" FromRole="Vaga" ToRole="Vaga_Perfil" />
+          <NavigationProperty Name="Vaga_Usuario" Relationship="Self.Vaga_Usuario_Vaga" FromRole="Vaga" ToRole="Vaga_Usuario" />
+        </EntityType>
+        <EntityType Name="Vaga_Perfil">
+          <Key>
+            <PropertyRef Name="Vaga_Id" />
+            <PropertyRef Name="Perfil_Id" />
+          </Key>
+          <Property Name="Vaga_Id" Type="Int32" Nullable="false" />
+          <Property Name="Perfil_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Vaga" Relationship="Self.Vaga_Perfil_Vaga" FromRole="Vaga_Perfil" ToRole="Vaga" />
+        </EntityType>
+        <EntityType Name="Vaga_Usuario">
+          <Key>
+            <PropertyRef Name="Vaga_Id" />
+            <PropertyRef Name="Usuario_Id" />
+          </Key>
+          <Property Name="Vaga_Id" Type="Int32" Nullable="false" />
+          <Property Name="Usuario_Id" Type="Int32" Nullable="false" />
+          <Property Name="Aprovado" Type="Boolean" Nullable="false" />
+          <Property Name="Data_Candidatura" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Data_Aprovacao" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Usuario" Relationship="Self.Vaga_Usuario_Usuario" FromRole="Vaga_Usuario" ToRole="Usuario" />
+          <NavigationProperty Name="Vaga" Relationship="Self.Vaga_Usuario_Vaga" FromRole="Vaga_Usuario" ToRole="Vaga" />
+        </EntityType>
+        <Association Name="Usuario_Endereco">
+          <End Role="Endereco" Type="Self.Endereco" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Endereco">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="Endereco_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Vaga_Vaga_Tipo">
+          <End Role="Tipo" Type="Self.Tipo" Multiplicity="1" />
+          <End Role="Vaga" Type="Self.Vaga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vaga">
+              <PropertyRef Name="Tipo_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Usuario_Usuario_Tipo">
+          <End Role="Tipo_Usuario" Type="Self.Tipo_Usuario" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="Tipo_Usuario_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Vaga_Empresa">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Vaga" Type="Self.Vaga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vaga">
+              <PropertyRef Name="Empresa_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Vaga_Usuario_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Vaga_Usuario" Type="Self.Vaga_Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vaga_Usuario">
+              <PropertyRef Name="Usuario_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Vaga_Perfil_Vaga">
+          <End Role="Vaga" Type="Self.Vaga" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Vaga_Perfil" Type="Self.Vaga_Perfil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vaga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vaga_Perfil">
+              <PropertyRef Name="Vaga_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Vaga_Usuario_Vaga">
+          <End Role="Vaga" Type="Self.Vaga" Multiplicity="1" />
+          <End Role="Vaga_Usuario" Type="Self.Vaga_Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vaga">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vaga_Usuario">
+              <PropertyRef Name="Vaga_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BuscaEmpregoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Endereco" EntityType="Self.Endereco" />
+          <EntitySet Name="Perfil" EntityType="Self.Perfil" />
+          <EntitySet Name="Tipo" EntityType="Self.Tipo" />
+          <EntitySet Name="Tipo_Usuario" EntityType="Self.Tipo_Usuario" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <EntitySet Name="Vaga" EntityType="Self.Vaga" />
+          <EntitySet Name="Vaga_Perfil" EntityType="Self.Vaga_Perfil" />
+          <EntitySet Name="Vaga_Usuario" EntityType="Self.Vaga_Usuario" />
+          <AssociationSet Name="Usuario_Endereco" Association="Self.Usuario_Endereco">
+            <End Role="Endereco" EntitySet="Endereco" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="Vaga_Vaga_Tipo" Association="Self.Vaga_Vaga_Tipo">
+            <End Role="Tipo" EntitySet="Tipo" />
+            <End Role="Vaga" EntitySet="Vaga" />
+          </AssociationSet>
+          <AssociationSet Name="Usuario_Usuario_Tipo" Association="Self.Usuario_Usuario_Tipo">
+            <End Role="Tipo_Usuario" EntitySet="Tipo_Usuario" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="Vaga_Empresa" Association="Self.Vaga_Empresa">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Vaga" EntitySet="Vaga" />
+          </AssociationSet>
+          <AssociationSet Name="Vaga_Usuario_Usuario" Association="Self.Vaga_Usuario_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Vaga_Usuario" EntitySet="Vaga_Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="Vaga_Perfil_Vaga" Association="Self.Vaga_Perfil_Vaga">
+            <End Role="Vaga" EntitySet="Vaga" />
+            <End Role="Vaga_Perfil" EntitySet="Vaga_Perfil" />
+          </AssociationSet>
+          <AssociationSet Name="Vaga_Usuario_Vaga" Association="Self.Vaga_Usuario_Vaga">
+            <End Role="Vaga" EntitySet="Vaga" />
+            <End Role="Vaga_Usuario" EntitySet="Vaga_Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="Usuario_Perfil1" Association="BuscaEmpregoModel.Usuario_Perfil1">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="Usuario_Perfil1">
+          <End Type="BuscaEmpregoModel.Perfil" Role="Perfil" Multiplicity="*" />
+          <End Type="BuscaEmpregoModel.Usuario" Role="Usuario" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BuscaEmpregoModelStoreContainer" CdmEntityContainer="BuscaEmpregoEntities">
+          <EntitySetMapping Name="Endereco">
+            <EntityTypeMapping TypeName="BuscaEmpregoModel.Endereco">
+              <MappingFragment StoreEntitySet="Endereco">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Logradouro" ColumnName="Logradouro" />
+                <ScalarProperty Name="Complemento" ColumnName="Complemento" />
+                <ScalarProperty Name="CEP" ColumnName="CEP" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Telefone" ColumnName="Telefone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Perfil">
+            <EntityTypeMapping TypeName="BuscaEmpregoModel.Perfil">
+              <MappingFragment StoreEntitySet="Perfil">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tipo">
+            <EntityTypeMapping TypeName="BuscaEmpregoModel.Tipo">
+              <MappingFragment StoreEntitySet="Tipo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Tipo1" ColumnName="Tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tipo_Usuario">
+            <EntityTypeMapping TypeName="BuscaEmpregoModel.Tipo_Usuario">
+              <MappingFragment StoreEntitySet="Tipo_Usuario">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="BuscaEmpregoModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="CPF_CNPJ" ColumnName="CPF_CNPJ" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Endereco_Id" ColumnName="Endereco_Id" />
+                <ScalarProperty Name="Tipo_Usuario_Id" ColumnName="Tipo_Usuario_Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Senha" ColumnName="Senha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vaga">
+            <EntityTypeMapping TypeName="BuscaEmpregoModel.Vaga">
+              <MappingFragment StoreEntitySet="Vaga">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Empresa_Id" ColumnName="Empresa_Id" />
+                <ScalarProperty Name="Tipo_Id" ColumnName="Tipo_Id" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="Beneficios" ColumnName="Beneficios" />
+                <ScalarProperty Name="Ativa" ColumnName="Ativa" />
+                <ScalarProperty Name="Data_Cadastro" ColumnName="Data_Cadastro" />
+                <ScalarProperty Name="Data_Preenchimento_Vaga" ColumnName="Data_Preenchimento_Vaga" />
+                <ScalarProperty Name="Data_Cancelamento" ColumnName="Data_Cancelamento" />
+                <ScalarProperty Name="Data_Ativacao" ColumnName="Data_Ativacao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vaga_Perfil">
+            <EntityTypeMapping TypeName="BuscaEmpregoModel.Vaga_Perfil">
+              <MappingFragment StoreEntitySet="Vaga_Perfil">
+                <ScalarProperty Name="Vaga_Id" ColumnName="Vaga_Id" />
+                <ScalarProperty Name="Perfil_Id" ColumnName="Perfil_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vaga_Usuario">
+            <EntityTypeMapping TypeName="BuscaEmpregoModel.Vaga_Usuario">
+              <MappingFragment StoreEntitySet="Vaga_Usuario">
+                <ScalarProperty Name="Vaga_Id" ColumnName="Vaga_Id" />
+                <ScalarProperty Name="Usuario_Id" ColumnName="Usuario_Id" />
+                <ScalarProperty Name="Aprovado" ColumnName="Aprovado" />
+                <ScalarProperty Name="Data_Candidatura" ColumnName="Data_Candidatura" />
+                <ScalarProperty Name="Data_Aprovacao" ColumnName="Data_Aprovacao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Usuario_Perfil1" TypeName="BuscaEmpregoModel.Usuario_Perfil1" StoreEntitySet="Usuario_Perfil">
+            <EndProperty Name="Usuario">
+              <ScalarProperty Name="Id" ColumnName="Usuario_Id" />
+            </EndProperty>
+            <EndProperty Name="Perfil">
+              <ScalarProperty Name="Id" ColumnName="Perfil_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
