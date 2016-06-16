@@ -23,31 +23,39 @@ namespace BuscaEmprego.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(Usuario model, string returnUrl)
+        public ActionResult Login(Usuario model)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.Email, model.Senha, persistCookie: false))
+            ModelState.Remove("Nome");
+            ModelState.Remove("CPF_CNPJ");
+            if (ModelState.IsValid)
             {
-                return RedirectToLocal(returnUrl);
+                using (var db = new BuscaEmpregoEntities())
+                {
+                    var user = db.Usuario.Where(x => x.Email == model.Email.ToLower() && x.Senha == model.Senha).FirstOrDefault();
+                    if (user != null)
+                        SetLoginSession(model);
+                }
+                return RedirectToAction("Index", "Home");
             }
 
-            // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            ModelState.AddModelError("", "Nome de usuário ou senha estão incorretos.");
             return View(model);
         }
-        
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
+            Session["user_name"] = null;
+            Session["user_id"] = null;
+            Session["tipo_usuario"] = null;
 
             return RedirectToAction("Index", "Home");
         }
-        
+
         [AllowAnonymous]
         public ActionResult Register()
         {
@@ -58,7 +66,7 @@ namespace BuscaEmprego.Controllers
 
             return View(usuarioModel);
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -69,10 +77,11 @@ namespace BuscaEmprego.Controllers
                 try
                 {
                     using (var db = new BuscaEmprego.Database.BuscaEmpregoEntities())
-                    {                        
+                    {
                         var ids = Request["check_perfil"].Split(',');
                         model.Perfil = new List<Perfil>();
-                        for (int i = 0; i < ids.Length; i++){
+                        for (int i = 0; i < ids.Length; i++)
+                        {
                             int id = int.Parse(ids[i]);
                             model.Perfil.Add(db.Perfil.Where(x => x.Id == id).First());
                         }
@@ -81,8 +90,7 @@ namespace BuscaEmprego.Controllers
                         db.SaveChanges();
                     }
 
-                    Session["user_name"] = model.Email;
-                    Session["user_id"] = model.Id;
+                    SetLoginSession(model);
                     return RedirectToAction("Index", "Home");
                 }
                 catch (Exception e)
@@ -92,6 +100,13 @@ namespace BuscaEmprego.Controllers
             }
 
             return View(model);
+        }
+
+        private void SetLoginSession(Usuario model)
+        {
+            Session["user_name"] = model.Email;
+            Session["user_id"] = model.Id;
+            Session["tipo_usuario"] = model.Tipo_Usuario_Id;
         }
 
         #region Helpers
@@ -116,7 +131,7 @@ namespace BuscaEmprego.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-                
+
         #endregion
     }
 }
