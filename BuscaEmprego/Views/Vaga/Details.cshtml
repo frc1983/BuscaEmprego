@@ -1,0 +1,86 @@
+﻿@model BuscaEmprego.Database.Vaga
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Vaga</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Usuario.Email)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Usuario.Email)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Tipo.Tipo1)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Tipo.Tipo1)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Descricao)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Descricao)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Salario)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Salario)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Beneficios)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Beneficios)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Ativa)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Ativa)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Data_Cadastro)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Data_Cadastro)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Data_Preenchimento_Vaga)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Data_Cancelamento)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Data_Cancelamento)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Data_Ativacao)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Data_Ativacao)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

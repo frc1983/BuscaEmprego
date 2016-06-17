@@ -9,6 +9,7 @@ using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using BuscaEmprego.Database;
+using BuscaEmprego.Helpers;
 
 namespace BuscaEmprego.Controllers
 {
@@ -61,7 +62,7 @@ namespace BuscaEmprego.Controllers
         {
             var usuarioModel = new Usuario();
 
-            PopularPerfil();
+            _perfil = PerfilHelper.PopularPerfil();
             usuarioModel.Perfil = _perfil;
 
             return View(usuarioModel);
@@ -110,15 +111,6 @@ namespace BuscaEmprego.Controllers
         }
 
         #region Helpers
-
-        private void PopularPerfil()
-        {
-            using (var db = new BuscaEmprego.Database.BuscaEmpregoEntities())
-            {
-                foreach (var item in db.Perfil.ToList())
-                    _perfil.Add(item);
-            }
-        }
 
         private ActionResult RedirectToLocal(string returnUrl)
         {

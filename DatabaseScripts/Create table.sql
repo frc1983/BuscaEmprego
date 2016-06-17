@@ -117,7 +117,7 @@ ALTER TABLE Vaga ADD CONSTRAINT Vaga_Vaga_Tipo FOREIGN KEY (Tipo_Id)
 ALTER TABLE Usuario ADD CONSTRAINT Usuario_Usuario_Tipo FOREIGN KEY (Tipo_Usuario_Id)
     REFERENCES Tipo_Usuario (Id);
 
-INSERT INTO Tipo (Tipo) VALUES ('Empresa')
+INSERT INTO Tipo (Tipo) VALUES ('Emprego')
 INSERT INTO Tipo (Tipo) VALUES ('Estágio')
 
 INSERT INTO Tipo_Usuario (Tipo) VALUES ('Empresa')

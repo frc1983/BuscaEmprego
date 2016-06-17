@@ -25,10 +25,10 @@
                         {
                         <li>@Html.ActionLink("Buscar Vagas", "About", "Home")</li>
                         }
-                        @if (Session["tipo_usuario"] != null && Session["tipo_usuario"] == "1")
+                        @if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 0)
                         {
-                            <li>@Html.ActionLink("Cadastrar Vaga", "Contact", "Home")</li>
-                            <li>@Html.ActionLink("Acompanhar Vagas", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("Cadastrar Vaga", "Create", "Vaga")</li>
+                            <li>@Html.ActionLink("Acompanhar Vagas", "AcompanharVaga", "Vaga")</li>
                         }
                     </ul>
                 </nav>

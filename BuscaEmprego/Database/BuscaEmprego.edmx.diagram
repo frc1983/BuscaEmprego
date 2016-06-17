@@ -11,16 +11,15 @@
         <EntityTypeShape EntityType="BuscaEmpregoModel.Tipo_Usuario" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BuscaEmpregoModel.Usuario" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BuscaEmpregoModel.Vaga" Width="1.5" PointX="5.25" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BuscaEmpregoModel.Vaga_Perfil" Width="1.5" PointX="7.5" PointY="6.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BuscaEmpregoModel.Vaga_Usuario" Width="1.5" PointX="7.5" PointY="2.875" IsExpanded="true" />
         <AssociationConnector Association="BuscaEmpregoModel.Usuario_Endereco" ManuallyRouted="false" />
         <AssociationConnector Association="BuscaEmpregoModel.Vaga_Vaga_Tipo" ManuallyRouted="false" />
         <AssociationConnector Association="BuscaEmpregoModel.Usuario_Usuario_Tipo" ManuallyRouted="false" />
         <AssociationConnector Association="BuscaEmpregoModel.Vaga_Empresa" ManuallyRouted="false" />
         <AssociationConnector Association="BuscaEmpregoModel.Vaga_Usuario_Usuario" ManuallyRouted="false" />
-        <AssociationConnector Association="BuscaEmpregoModel.Vaga_Perfil_Vaga" ManuallyRouted="false" />
         <AssociationConnector Association="BuscaEmpregoModel.Vaga_Usuario_Vaga" ManuallyRouted="false" />
         <AssociationConnector Association="BuscaEmpregoModel.Usuario_Perfil1" />
+        <AssociationConnector Association="BuscaEmpregoModel.Vaga_Perfil" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

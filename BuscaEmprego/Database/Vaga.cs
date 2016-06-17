@@ -16,8 +16,8 @@ namespace BuscaEmprego.Database
     {
         public Vaga()
         {
-            this.Vaga_Perfil = new HashSet<Vaga_Perfil>();
             this.Vaga_Usuario = new HashSet<Vaga_Usuario>();
+            this.Perfil = new HashSet<Perfil>();
         }
     
         public int Id { get; set; }
@@ -34,7 +34,7 @@ namespace BuscaEmprego.Database
     
         public virtual Tipo Tipo { get; set; }
         public virtual Usuario Usuario { get; set; }
-        public virtual ICollection<Vaga_Perfil> Vaga_Perfil { get; set; }
         public virtual ICollection<Vaga_Usuario> Vaga_Usuario { get; set; }
+        public virtual ICollection<Perfil> Perfil { get; set; }
     }
 }

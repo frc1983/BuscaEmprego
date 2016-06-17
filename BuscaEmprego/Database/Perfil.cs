@@ -17,11 +17,13 @@ namespace BuscaEmprego.Database
         public Perfil()
         {
             this.Usuario = new HashSet<Usuario>();
+            this.Vaga = new HashSet<Vaga>();
         }
     
         public int Id { get; set; }
         public string Nome { get; set; }
     
         public virtual ICollection<Usuario> Usuario { get; set; }
+        public virtual ICollection<Vaga> Vaga { get; set; }
     }
 }

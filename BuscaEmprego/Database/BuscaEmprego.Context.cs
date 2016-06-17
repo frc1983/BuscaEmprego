@@ -31,7 +31,6 @@ namespace BuscaEmprego.Database
         public DbSet<Tipo_Usuario> Tipo_Usuario { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Vaga> Vaga { get; set; }
-        public DbSet<Vaga_Perfil> Vaga_Perfil { get; set; }
         public DbSet<Vaga_Usuario> Vaga_Usuario { get; set; }
     }
 }

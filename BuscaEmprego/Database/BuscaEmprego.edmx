@@ -144,6 +144,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Vaga_Perfil_Perfil">
+          <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
+          <End Role="Vaga_Perfil" Type="Self.Vaga_Perfil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Perfil">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vaga_Perfil">
+              <PropertyRef Name="Perfil_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Vaga_Perfil_Vaga">
           <End Role="Vaga" Type="Self.Vaga" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -220,6 +232,10 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Vaga" EntitySet="Vaga" />
           </AssociationSet>
+          <AssociationSet Name="Vaga_Perfil_Perfil" Association="Self.Vaga_Perfil_Perfil">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="Vaga_Perfil" EntitySet="Vaga_Perfil" />
+          </AssociationSet>
           <AssociationSet Name="Vaga_Perfil_Vaga" Association="Self.Vaga_Perfil_Vaga">
             <End Role="Vaga" EntitySet="Vaga" />
             <End Role="Vaga_Perfil" EntitySet="Vaga_Perfil" />
@@ -260,6 +276,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nome" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="BuscaEmpregoModel.Usuario_Perfil1" FromRole="Perfil" ToRole="Usuario" />
+          <NavigationProperty Name="Vaga" Relationship="BuscaEmpregoModel.Vaga_Perfil" FromRole="Perfil" ToRole="Vaga" />
         </EntityType>
         <EntityType Name="Tipo">
           <Key>
@@ -311,17 +328,8 @@
           <Property Name="Data_Ativacao" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Tipo" Relationship="Self.Vaga_Vaga_Tipo" FromRole="Vaga" ToRole="Tipo" />
           <NavigationProperty Name="Usuario" Relationship="Self.Vaga_Empresa" FromRole="Vaga" ToRole="Usuario" />
-          <NavigationProperty Name="Vaga_Perfil" Relationship="Self.Vaga_Perfil_Vaga" FromRole="Vaga" ToRole="Vaga_Perfil" />
           <NavigationProperty Name="Vaga_Usuario" Relationship="Self.Vaga_Usuario_Vaga" FromRole="Vaga" ToRole="Vaga_Usuario" />
-        </EntityType>
-        <EntityType Name="Vaga_Perfil">
-          <Key>
-            <PropertyRef Name="Vaga_Id" />
-            <PropertyRef Name="Perfil_Id" />
-          </Key>
-          <Property Name="Vaga_Id" Type="Int32" Nullable="false" />
-          <Property Name="Perfil_Id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Vaga" Relationship="Self.Vaga_Perfil_Vaga" FromRole="Vaga_Perfil" ToRole="Vaga" />
+          <NavigationProperty Name="Perfil" Relationship="BuscaEmpregoModel.Vaga_Perfil" FromRole="Vaga" ToRole="Perfil" />
         </EntityType>
         <EntityType Name="Vaga_Usuario">
           <Key>
@@ -398,20 +406,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Vaga_Perfil_Vaga">
-          <End Role="Vaga" Type="Self.Vaga" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Vaga_Perfil" Type="Self.Vaga_Perfil" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Vaga">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Vaga_Perfil">
-              <PropertyRef Name="Vaga_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Vaga_Usuario_Vaga">
           <End Role="Vaga" Type="Self.Vaga" Multiplicity="1" />
           <End Role="Vaga_Usuario" Type="Self.Vaga_Usuario" Multiplicity="*" />
@@ -431,7 +425,6 @@
           <EntitySet Name="Tipo_Usuario" EntityType="Self.Tipo_Usuario" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" />
           <EntitySet Name="Vaga" EntityType="Self.Vaga" />
-          <EntitySet Name="Vaga_Perfil" EntityType="Self.Vaga_Perfil" />
           <EntitySet Name="Vaga_Usuario" EntityType="Self.Vaga_Usuario" />
           <AssociationSet Name="Usuario_Endereco" Association="Self.Usuario_Endereco">
             <End Role="Endereco" EntitySet="Endereco" />
@@ -453,10 +446,6 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Vaga_Usuario" EntitySet="Vaga_Usuario" />
           </AssociationSet>
-          <AssociationSet Name="Vaga_Perfil_Vaga" Association="Self.Vaga_Perfil_Vaga">
-            <End Role="Vaga" EntitySet="Vaga" />
-            <End Role="Vaga_Perfil" EntitySet="Vaga_Perfil" />
-          </AssociationSet>
           <AssociationSet Name="Vaga_Usuario_Vaga" Association="Self.Vaga_Usuario_Vaga">
             <End Role="Vaga" EntitySet="Vaga" />
             <End Role="Vaga_Usuario" EntitySet="Vaga_Usuario" />
@@ -465,10 +454,18 @@
             <End Role="Perfil" EntitySet="Perfil" />
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
+          <AssociationSet Name="Vaga_Perfil" Association="BuscaEmpregoModel.Vaga_Perfil">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="Vaga" EntitySet="Vaga" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="Usuario_Perfil1">
           <End Type="BuscaEmpregoModel.Perfil" Role="Perfil" Multiplicity="*" />
           <End Type="BuscaEmpregoModel.Usuario" Role="Usuario" Multiplicity="*" />
+        </Association>
+        <Association Name="Vaga_Perfil">
+          <End Type="BuscaEmpregoModel.Perfil" Role="Perfil" Multiplicity="*" />
+          <End Type="BuscaEmpregoModel.Vaga" Role="Vaga" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -542,14 +539,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Vaga_Perfil">
-            <EntityTypeMapping TypeName="BuscaEmpregoModel.Vaga_Perfil">
-              <MappingFragment StoreEntitySet="Vaga_Perfil">
-                <ScalarProperty Name="Vaga_Id" ColumnName="Vaga_Id" />
-                <ScalarProperty Name="Perfil_Id" ColumnName="Perfil_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Vaga_Usuario">
             <EntityTypeMapping TypeName="BuscaEmpregoModel.Vaga_Usuario">
               <MappingFragment StoreEntitySet="Vaga_Usuario">
@@ -564,6 +553,14 @@
           <AssociationSetMapping Name="Usuario_Perfil1" TypeName="BuscaEmpregoModel.Usuario_Perfil1" StoreEntitySet="Usuario_Perfil">
             <EndProperty Name="Usuario">
               <ScalarProperty Name="Id" ColumnName="Usuario_Id" />
+            </EndProperty>
+            <EndProperty Name="Perfil">
+              <ScalarProperty Name="Id" ColumnName="Perfil_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Vaga_Perfil" TypeName="BuscaEmpregoModel.Vaga_Perfil" StoreEntitySet="Vaga_Perfil">
+            <EndProperty Name="Vaga">
+              <ScalarProperty Name="Id" ColumnName="Vaga_Id" />
             </EndProperty>
             <EndProperty Name="Perfil">
               <ScalarProperty Name="Id" ColumnName="Perfil_Id" />

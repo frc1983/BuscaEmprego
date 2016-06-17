@@ -184,6 +184,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\VagaController.cs" />
     <Compile Include="Database\BuscaEmprego.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -217,9 +218,6 @@
     <Compile Include="Database\Vaga.cs">
       <DependentUpon>BuscaEmprego.tt</DependentUpon>
     </Compile>
-    <Compile Include="Database\Vaga_Perfil.cs">
-      <DependentUpon>BuscaEmprego.tt</DependentUpon>
-    </Compile>
     <Compile Include="Database\Vaga_Usuario.cs">
       <DependentUpon>BuscaEmprego.tt</DependentUpon>
     </Compile>
@@ -227,7 +225,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\DropDownHelper.cs" />
+    <Compile Include="Helpers\PerfilHelper.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\Vaga.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -354,6 +354,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="Views\Vaga\Details.cshtml" />
+    <Content Include="Views\Vaga\Create.cshtml" />
+    <Content Include="Views\Vaga\Edit.cshtml" />
+    <Content Include="Views\Vaga\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
