@@ -34,6 +34,7 @@ namespace BuscaEmprego.Controllers
             var model = new Vaga();
             ViewBag.Tipo_Id = new SelectList(db.Tipo, "Id", "Tipo1");
             ViewBag.Empresa_Id = new SelectList(db.Usuario, "Id", "Email");
+
             model.Perfil = PerfilHelper.PopularPerfil().ToList();
 
             return View(model);
@@ -45,11 +46,14 @@ namespace BuscaEmprego.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Vaga vaga)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && Session["user_id"] != null)
             {
+                var idUsuario = int.Parse(Session["user_id"].ToString());
+                vaga.Usuario = db.Usuario.Where(x => x.Id == idUsuario).FirstOrDefault();
+                vaga.Data_Cadastro = DateTime.Now;
                 db.Vaga.Add(vaga);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Create");
             }
 
             ViewBag.Tipo_Id = new SelectList(db.Tipo, "Id", "Tipo1", vaga.Tipo_Id);

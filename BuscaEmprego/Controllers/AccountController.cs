@@ -38,17 +38,19 @@ namespace BuscaEmprego.Controllers
                 {
                     var user = db.Usuario.Where(x => x.Email == model.Email.ToLower() && x.Senha == model.Senha).FirstOrDefault();
                     if (user != null)
-                        SetLoginSession(model);
-                }
-                return RedirectToAction("Index", "Home");
+                    {
+                        SetLoginSession(user);
+                        return RedirectToAction("Index", "Home");
+                    }
+                }                
             }
 
             ModelState.AddModelError("", "Nome de usuário ou senha estão incorretos.");
             return View(model);
         }
-
-        [HttpPost]
-        public ActionResult LogOff()
+        
+        [AllowAnonymous]
+        public ActionResult Logoff()
         {
             Session["user_name"] = null;
             Session["user_id"] = null;
