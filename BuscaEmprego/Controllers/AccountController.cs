@@ -10,12 +10,14 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using BuscaEmprego.Database;
 using BuscaEmprego.Helpers;
+using System.Data;
 
 namespace BuscaEmprego.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private BuscaEmpregoEntities db = new BuscaEmpregoEntities();
         private ICollection<Perfil> _perfil = new List<Perfil>();
 
         [AllowAnonymous]
@@ -34,21 +36,18 @@ namespace BuscaEmprego.Controllers
             ModelState.Remove("CPF_CNPJ");
             if (ModelState.IsValid)
             {
-                using (var db = new BuscaEmpregoEntities())
+                var user = db.Usuario.Where(x => x.Email == model.Email.ToLower() && x.Senha == model.Senha).FirstOrDefault();
+                if (user != null)
                 {
-                    var user = db.Usuario.Where(x => x.Email == model.Email.ToLower() && x.Senha == model.Senha).FirstOrDefault();
-                    if (user != null)
-                    {
-                        SetLoginSession(user);
-                        return RedirectToAction("Index", "Home");
-                    }
-                }                
+                    SetLoginSession(user);
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
             ModelState.AddModelError("", "Nome de usuário ou senha estão incorretos.");
             return View(model);
         }
-        
+
         [AllowAnonymous]
         public ActionResult Logoff()
         {
@@ -62,10 +61,7 @@ namespace BuscaEmprego.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var usuarioModel = new Usuario();
-
-            _perfil = PerfilHelper.PopularPerfil();
-            usuarioModel.Perfil = _perfil;
+            var usuarioModel = ObterUsuarioLogado();     
 
             return View(usuarioModel);
         }
@@ -79,19 +75,22 @@ namespace BuscaEmprego.Controllers
             {
                 try
                 {
-                    using (var db = new BuscaEmprego.Database.BuscaEmpregoEntities())
-                    {
-                        var ids = Request["check_perfil"].Split(',');
-                        model.Perfil = new List<Perfil>();
-                        for (int i = 0; i < ids.Length; i++)
-                        {
-                            int id = int.Parse(ids[i]);
-                            model.Perfil.Add(db.Perfil.Where(x => x.Id == id).First());
-                        }
+                    model = ObterUsuarioLogado();
 
-                        db.Usuario.Add(model);
-                        db.SaveChanges();
+                    var ids = Request["check_perfil"].Split(',');
+                    model.Perfil = new List<Perfil>();
+                    for (int i = 0; i < ids.Length; i++)
+                    {
+                        int id = int.Parse(ids[i]);
+                        model.Perfil.Add(db.Perfil.Where(x => x.Id == id).First());
                     }
+
+                    if(model.Id != 0)
+                        db.Entry(model).State = EntityState.Modified;
+                    else
+                        db.Usuario.Add(model);
+
+                    db.SaveChanges();
 
                     SetLoginSession(model);
                     return RedirectToAction("Index", "Home");
@@ -103,6 +102,19 @@ namespace BuscaEmprego.Controllers
             }
 
             return View(model);
+        }
+
+        private Usuario ObterUsuarioLogado()
+        {
+            var usuarioModel = new Usuario();
+
+            if (Session["user_id"] != null && int.Parse(Session["user_id"].ToString()) != 0)
+            {
+                var id = int.Parse(Session["user_id"].ToString());
+                usuarioModel = db.Usuario.Where(x => x.Id == id).FirstOrDefault();
+            }
+
+            return usuarioModel;
         }
 
         private void SetLoginSession(Usuario model)

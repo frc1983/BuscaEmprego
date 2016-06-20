@@ -14,7 +14,6 @@ namespace BuscaEmprego.Controllers
     {
         private BuscaEmpregoEntities db = new BuscaEmpregoEntities();
 
-
         //
         // GET: /Vaga/Details/5
         public ActionResult Details(int id = 0)

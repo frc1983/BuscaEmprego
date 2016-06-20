@@ -13,6 +13,7 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
+    @Html.HiddenFor(x => x.Id)
     <h4>Criar uma conta no BuscaEmprego</h4>
     <hr />
     <fieldset>
@@ -45,12 +46,16 @@
 
         <h4>Dados de Perfil</h4>
         <div class="form-group">
-            @for (int i = 0; i < Model.Perfil.Count; i++)
-            {
-                <div>
-                    <input type="checkbox" name="check_perfil" value="@Model.Perfil.ElementAt(i).Id" />
-                    @Html.DisplayFor(x => x.Perfil.ElementAt(i).Nome)
-                </div>
+            @{
+                var perfis = BuscaEmprego.Helpers.PerfilHelper.PopularPerfil();
+                for (int i = 0; i < perfis.Count; i++)
+                {
+                    string check = Model.Perfil.Where(x => x.Id == perfis.ElementAt(i).Id).FirstOrDefault() != null ? "checked" : "";
+                    <div>
+                        <input type="checkbox" name="check_perfil" value="@perfis.ElementAt(i).Id" @check />
+                        @Html.DisplayFor(x => perfis.ElementAt(i).Nome)
+                    </div>
+                }
             }
         </div>
 

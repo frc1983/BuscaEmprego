@@ -3,10 +3,11 @@
     <text>
         Hello, @Session["user_name"]!
         <a href="@Url.Action("Logoff", "Account")">Log off</a>
+        <li>@Html.ActionLink("Editar Usuário", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
     </text>
 } else {
     <ul>
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Registrar-se", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }
