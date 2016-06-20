@@ -16,7 +16,7 @@ namespace BuscaEmprego.Controllers
 
         //
         // GET: /Vaga/Details/5
-        public ActionResult Details(int id = 0)
+        public ActionResult Details(int id = 1)
         {
             Vaga vaga = db.Vaga.Find(id);
             if (vaga == null)
@@ -63,7 +63,7 @@ namespace BuscaEmprego.Controllers
 
         //
         // GET: /Vaga/Edit/5
-        public ActionResult Edit(int id = 0)
+        public ActionResult Edit(int id)
         {
             Vaga vaga = db.Vaga.Find(id);
             if (vaga == null)
@@ -76,7 +76,7 @@ namespace BuscaEmprego.Controllers
         }
 
         //
-        // POST: /Vaga/Edit/5
+        // POST: /Vaga/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Vaga vaga)
@@ -92,9 +92,25 @@ namespace BuscaEmprego.Controllers
             return View(vaga);
         }
 
+		//
+        // POST: /Vaga/Details/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Apply(Vaga vaga)
+        {
+            var idUsuario = int.Parse(Session["user_id"].ToString());
+			var vagaUsuario = new Vaga_Usuario();
+            vagaUsuario.Usuario_Id = idUsuario;
+			vagaUsuario.Vaga_Id = vaga.Id;
+            vagaUsuario.Data_Candidatura = DateTime.Now;
+            db.Vaga_Usuario.Add(vagaUsuario);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         //
         // GET: /Vaga/Delete/5
-        public ActionResult Delete(int id = 0)
+        public ActionResult Delete(int id)
         {
             Vaga vaga = db.Vaga.Find(id);
             if (vaga == null)
@@ -105,12 +121,12 @@ namespace BuscaEmprego.Controllers
         }
 
         //
-        // POST: /Vaga/Delete/5
+        // POST: /Vaga/Delete/
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(Vaga vaga)
         {
-            Vaga vaga = db.Vaga.Find(id);
+            //Vaga vaga = db.Vaga.Find(id);
             db.Vaga.Remove(vaga);
             db.SaveChanges();
             return RedirectToAction("Index");

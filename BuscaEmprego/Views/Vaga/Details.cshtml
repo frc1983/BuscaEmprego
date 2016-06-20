@@ -11,76 +11,77 @@
     <legend>Vaga</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Usuario.Email)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Usuario.Email)
+         Email: 
+         @Html.DisplayFor(model => model.Usuario.Email)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Tipo.Tipo1)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Tipo.Tipo1)
+         Tipo: 
+         @Html.DisplayFor(model => model.Tipo.Tipo1)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Descricao)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Descricao)
+         Descrição: 
+         @Html.DisplayFor(model => model.Descricao)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Salario)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Salario)
+         Salário: 
+         @Html.DisplayFor(model => model.Salario)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Beneficios)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Beneficios)
+         Benefícios: 
+         @Html.DisplayFor(model => model.Beneficios)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Ativa)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Ativa)
+         Ativa: 
+         @Html.DisplayFor(model => model.Ativa)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Data_Cadastro)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Data_Cadastro)
+         Data Cadastro: 
+         @Html.DisplayFor(model => model.Data_Cadastro)
     </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Data_Preenchimento_Vaga)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
-    </div>
+    @if(Session["tipo_usuario"] == "1")
+    {
+        <div class="display-label">
+             Data Preenchimento: 
+             @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Data_Cancelamento)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Data_Cancelamento)
-    </div>
+        <div class="display-label">
+             Data Cancelamento: 
+             @Html.DisplayFor(model => model.Data_Cancelamento)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Data_Ativacao)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Data_Ativacao)
-    </div>
+        <div class="display-label">
+             Data Ativação: 
+             @Html.DisplayFor(model => model.Data_Ativacao)
+        </div>
+
+        <h4>Candidatos</h4>
+        <div class="form-group">
+            @for (int i = 0; i < Model.Perfil.Count; i++)
+                    {
+                <div>
+                    <input type="checkbox" name="check_perfil" value="@Model.Perfil.ElementAt(i).Id" />
+                    @Html.DisplayFor(x => x.Perfil.ElementAt(i).Nome)
+                </div>
+                    }
+        </div>
+    }
+    else 
+    {
+        <p>
+            <input type="submit" value="Apply" />
+        </p>
+    }
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Delete", "Delete", new { id=Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
