@@ -23,23 +23,60 @@ namespace BuscaEmprego.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(vaga);
         }
 
-        //Candidatar-se
+        //
         // POST: /Vaga/Details/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public void Details(Vaga vaga)
+        public void Apply(Vaga vaga)
         {
             var idUsuario = int.Parse(Session["user_id"].ToString());
-            var vagaUsuario = new Vaga_Usuario();
+            var vagaUsuario = db.Vaga_Usuario.Where(x => x.Usuario_Id == idUsuario).FirstOrDefault();
+            if (vagaUsuario != null)
+            {
+                ModelState.AddModelError(String.Empty, "Usuário já é candidato dessa Vaga.");
+                return;
+            }
+
+            vagaUsuario = new Vaga_Usuario();
             vagaUsuario.Usuario_Id = idUsuario;
             vagaUsuario.Vaga_Id = vaga.Id;
             vagaUsuario.Data_Candidatura = DateTime.Now;
             db.Vaga_Usuario.Add(vagaUsuario);
             db.SaveChanges();
-            //mensagem de sucesso
+
+            ViewBag.Sucesso = "Candidatura realizada com sucesso.";
+        }
+
+        //
+        // POST: /Vaga/Details/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public void Approve(Vaga vaga)
+        {
+            var ids = Request["check_candidato"].Split(',');
+
+            if (ids == null || ids.Length < 1)
+            {
+                ModelState.AddModelError(String.Empty, "Nenhum candidato foi selecionado.");
+                return;
+            }
+
+            for (int i = 0; i < ids.Length; i++)
+            {
+                int idUsuario = int.Parse(ids[i]);
+                var vagaUsuario = db.Vaga_Usuario
+                    .Where(x => x.Vaga_Id == vaga.Id && x.Usuario_Id == idUsuario).FirstOrDefault();
+                vagaUsuario.Aprovado = true;
+                vagaUsuario.Data_Aprovacao = DateTime.Now;
+                db.Vaga_Usuario.Add(vagaUsuario);
+                db.SaveChanges();
+            }
+
+            ViewBag.Sucesso = "Aprovação dos candidatos realizada com sucesso.";
         }
 
         //

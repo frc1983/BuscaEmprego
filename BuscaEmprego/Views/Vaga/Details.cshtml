@@ -7,79 +7,82 @@
 
 <h2>Details</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Vaga</legend>
+<fieldset>
+    <legend>Vaga</legend>
 
+    <div class="display-label">
+            Email: 
+            @Html.DisplayFor(model => model.Usuario.Email)
+    </div>
+
+    <div class="display-label">
+            Tipo: 
+            @Html.DisplayFor(model => model.Tipo.Tipo1)
+    </div>
+
+    <div class="display-label">
+            Descrição: 
+            @Html.DisplayFor(model => model.Descricao)
+    </div>
+
+    <div class="display-label">
+            Salário: 
+            @Html.DisplayFor(model => model.Salario)
+    </div>
+
+    <div class="display-label">
+            Benefícios: 
+            @Html.DisplayFor(model => model.Beneficios)
+    </div>
+
+    <div class="display-label">
+            Ativa: 
+            @Html.DisplayFor(model => model.Ativa)
+    </div>
+
+    <div class="display-label">
+            Data Cadastro: 
+            @Html.DisplayFor(model => model.Data_Cadastro)
+    </div>
+
+    @if (int.Parse(Session["tipo_usuario"].ToString()) == 1)
+    {
         <div class="display-label">
-             Email: 
-             @Html.DisplayFor(model => model.Usuario.Email)
+                Data Preenchimento: 
+                @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
         </div>
 
         <div class="display-label">
-             Tipo: 
-             @Html.DisplayFor(model => model.Tipo.Tipo1)
+                Data Cancelamento: 
+                @Html.DisplayFor(model => model.Data_Cancelamento)
         </div>
 
         <div class="display-label">
-             Descrição: 
-             @Html.DisplayFor(model => model.Descricao)
+                Data Ativação: 
+                @Html.DisplayFor(model => model.Data_Ativacao)
         </div>
 
-        <div class="display-label">
-             Salário: 
-             @Html.DisplayFor(model => model.Salario)
-        </div>
-
-        <div class="display-label">
-             Benefícios: 
-             @Html.DisplayFor(model => model.Beneficios)
-        </div>
-
-        <div class="display-label">
-             Ativa: 
-             @Html.DisplayFor(model => model.Ativa)
-        </div>
-
-        <div class="display-label">
-             Data Cadastro: 
-             @Html.DisplayFor(model => model.Data_Cadastro)
-        </div>
-
-        @if (int.Parse(Session["tipo_usuario"].ToString()) == 1)
+        @using (Html.BeginForm("Details", "Approve", FormMethod.Post))
         {
-            <div class="display-label">
-                 Data Preenchimento: 
-                 @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
-            </div>
-
-            <div class="display-label">
-                 Data Cancelamento: 
-                 @Html.DisplayFor(model => model.Data_Cancelamento)
-            </div>
-
-            <div class="display-label">
-                 Data Ativação: 
-                 @Html.DisplayFor(model => model.Data_Ativacao)
-            </div>
-
             <h4>Candidatos</h4>
             <div class="form-group">
-                @for (int i = 0; i < Model.Perfil.Count; i++)
-                {
-                    <div>
-                        <input type="checkbox" name="check_candidato" value="@Model.Perfil.ElementAt(i).Id" />
-                        @Html.DisplayFor(x => x.Perfil.ElementAt(i).Nome)
-                    </div>
+                @{
+                    var candidatos = BuscaEmprego.Helpers.CandidatoHelper.PopularCandidato(Model.Id);
+                    for (int i = 0; i < candidatos.Count; i++)
+                    {
+                        string check = candidatos.ElementAt(i).Aprovado ? "checked" : "";
+                        <div>
+                            <input type="checkbox" name="check_candidato" value="@candidatos.ElementAt(i).Usuario_Id" @check />
+                            @Html.DisplayFor(x => candidatos.ElementAt(i).Usuario.Nome)
+                        </div>
+                    }
                 }
             </div>
 
             <p>
                 <input type="submit" value="Approve" />
             </p>
+        
 
             <p>
                 @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
@@ -87,7 +90,10 @@
                 @Html.ActionLink("Back to List", "Index")
             </p>
         }
-        else
+    }
+    else
+    {
+        @using (Html.BeginForm("Details", "Apply", FormMethod.Post))
         {
             <p>
                 <input type="submit" value="Apply" />
@@ -97,5 +103,6 @@
                 @Html.ActionLink("Back to List", "Index")
             </p>
         }
-    </fieldset>
+    }
+</fieldset>
 }

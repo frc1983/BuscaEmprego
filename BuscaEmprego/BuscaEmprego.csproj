@@ -226,6 +226,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\DropDownHelper.cs" />
+    <Compile Include="Helpers\CandidatoHelper.cs" />
     <Compile Include="Helpers\PerfilHelper.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Vaga.cs" />
