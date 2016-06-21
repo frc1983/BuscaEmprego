@@ -7,81 +7,95 @@
 
 <h2>Details</h2>
 
-<fieldset>
-    <legend>Vaga</legend>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Vaga</legend>
 
-    <div class="display-label">
-         Email: 
-         @Html.DisplayFor(model => model.Usuario.Email)
-    </div>
-
-    <div class="display-label">
-         Tipo: 
-         @Html.DisplayFor(model => model.Tipo.Tipo1)
-    </div>
-
-    <div class="display-label">
-         Descrição: 
-         @Html.DisplayFor(model => model.Descricao)
-    </div>
-
-    <div class="display-label">
-         Salário: 
-         @Html.DisplayFor(model => model.Salario)
-    </div>
-
-    <div class="display-label">
-         Benefícios: 
-         @Html.DisplayFor(model => model.Beneficios)
-    </div>
-
-    <div class="display-label">
-         Ativa: 
-         @Html.DisplayFor(model => model.Ativa)
-    </div>
-
-    <div class="display-label">
-         Data Cadastro: 
-         @Html.DisplayFor(model => model.Data_Cadastro)
-    </div>
-
-    @if(Session["tipo_usuario"] == "1")
-    {
         <div class="display-label">
-             Data Preenchimento: 
-             @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
+             Email: 
+             @Html.DisplayFor(model => model.Usuario.Email)
         </div>
 
         <div class="display-label">
-             Data Cancelamento: 
-             @Html.DisplayFor(model => model.Data_Cancelamento)
+             Tipo: 
+             @Html.DisplayFor(model => model.Tipo.Tipo1)
         </div>
 
         <div class="display-label">
-             Data Ativação: 
-             @Html.DisplayFor(model => model.Data_Ativacao)
+             Descrição: 
+             @Html.DisplayFor(model => model.Descricao)
         </div>
 
-        <h4>Candidatos</h4>
-        <div class="form-group">
-            @for (int i = 0; i < Model.Perfil.Count; i++)
-                    {
-                <div>
-                    <input type="checkbox" name="check_perfil" value="@Model.Perfil.ElementAt(i).Id" />
-                    @Html.DisplayFor(x => x.Perfil.ElementAt(i).Nome)
-                </div>
-                    }
+        <div class="display-label">
+             Salário: 
+             @Html.DisplayFor(model => model.Salario)
         </div>
-    }
-    else 
-    {
-        <p>
-            <input type="submit" value="Apply" />
-        </p>
-    }
-</fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Delete", "Delete", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+        <div class="display-label">
+             Benefícios: 
+             @Html.DisplayFor(model => model.Beneficios)
+        </div>
+
+        <div class="display-label">
+             Ativa: 
+             @Html.DisplayFor(model => model.Ativa)
+        </div>
+
+        <div class="display-label">
+             Data Cadastro: 
+             @Html.DisplayFor(model => model.Data_Cadastro)
+        </div>
+
+        @if (int.Parse(Session["tipo_usuario"].ToString()) == 1)
+        {
+            <div class="display-label">
+                 Data Preenchimento: 
+                 @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
+            </div>
+
+            <div class="display-label">
+                 Data Cancelamento: 
+                 @Html.DisplayFor(model => model.Data_Cancelamento)
+            </div>
+
+            <div class="display-label">
+                 Data Ativação: 
+                 @Html.DisplayFor(model => model.Data_Ativacao)
+            </div>
+
+            <h4>Candidatos</h4>
+            <div class="form-group">
+                @for (int i = 0; i < Model.Perfil.Count; i++)
+                {
+                    <div>
+                        <input type="checkbox" name="check_candidato" value="@Model.Perfil.ElementAt(i).Id" />
+                        @Html.DisplayFor(x => x.Perfil.ElementAt(i).Nome)
+                    </div>
+                }
+            </div>
+
+            <p>
+                <input type="submit" value="Approve" />
+            </p>
+
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>
+        }
+        else
+        {
+            <p>
+                <input type="submit" value="Apply" />
+            </p>
+
+            <p>
+                @Html.ActionLink("Back to List", "Index")
+            </p>
+        }
+    </fieldset>
+}

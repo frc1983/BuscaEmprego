@@ -16,7 +16,7 @@ namespace BuscaEmprego.Controllers
 
         //
         // GET: /Vaga/Details/5
-        public ActionResult Details(int id = 1)
+        public ActionResult Details(int id)
         {
             Vaga vaga = db.Vaga.Find(id);
             if (vaga == null)
@@ -24,6 +24,22 @@ namespace BuscaEmprego.Controllers
                 return HttpNotFound();
             }
             return View(vaga);
+        }
+
+        //Candidatar-se
+        // POST: /Vaga/Details/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public void Details(Vaga vaga)
+        {
+            var idUsuario = int.Parse(Session["user_id"].ToString());
+            var vagaUsuario = new Vaga_Usuario();
+            vagaUsuario.Usuario_Id = idUsuario;
+            vagaUsuario.Vaga_Id = vaga.Id;
+            vagaUsuario.Data_Candidatura = DateTime.Now;
+            db.Vaga_Usuario.Add(vagaUsuario);
+            db.SaveChanges();
+            //mensagem de sucesso
         }
 
         //
@@ -90,22 +106,6 @@ namespace BuscaEmprego.Controllers
             ViewBag.Tipo_Id = new SelectList(db.Tipo, "Id", "Tipo1", vaga.Tipo_Id);
             ViewBag.Empresa_Id = new SelectList(db.Usuario, "Id", "Email", vaga.Empresa_Id);
             return View(vaga);
-        }
-
-		//
-        // POST: /Vaga/Details/
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Apply(Vaga vaga)
-        {
-            var idUsuario = int.Parse(Session["user_id"].ToString());
-			var vagaUsuario = new Vaga_Usuario();
-            vagaUsuario.Usuario_Id = idUsuario;
-			vagaUsuario.Vaga_Id = vaga.Id;
-            vagaUsuario.Data_Candidatura = DateTime.Now;
-            db.Vaga_Usuario.Add(vagaUsuario);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         //
