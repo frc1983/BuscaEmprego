@@ -21,10 +21,7 @@
                 <nav>
                     <ul id="menu">
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        @if ((Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 2) || Session["tipo_usuario"] == null)
-                        {
-                        <li>@Html.ActionLink("Buscar Vagas", "About", "Home")</li>
-                        }
+                        <li>@Html.ActionLink("Buscar Vagas", "Find", "Vaga")</li>
                         @if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 1)
                         {
                             <li>@Html.ActionLink("Cadastrar Vaga", "Create", "Vaga")</li>

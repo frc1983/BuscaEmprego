@@ -357,6 +357,7 @@
     <Content Include="Views\Vaga\Create.cshtml" />
     <Content Include="Views\Vaga\Edit.cshtml" />
     <Content Include="Views\Vaga\Delete.cshtml" />
+    <Content Include="Views\Vaga\Find.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,18 @@
+﻿@model IEnumerable<BuscaEmprego.Database.Vaga>
+
+@{
+    ViewBag.Title = "Find";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Find</h2>
+
+@foreach (var item in Model)
+{
+    <div class="card">
+        @Html.Label(item.Descricao)
+        @Html.Label(item.Salario.ToString())
+        @Html.Label(item.Beneficios)
+        <input type="button" value="Detalhes da vaga" onclick="window.location = '@Url.Action("Details", new { id = @item.Id })'" />
+    </div>
+}

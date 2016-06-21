@@ -15,54 +15,64 @@
     <fieldset>
         <legend>Vaga</legend>
 
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Empresa_Id)
+        @Html.HiddenFor(model => model.Tipo_Id)
+        @Html.HiddenFor(model => model.Descricao)
+        @Html.HiddenFor(model => model.Beneficios)
+
+        @Html.HiddenFor(model => model.Data_Cadastro)
+        @Html.HiddenFor(model => model.Data_Preenchimento_Vaga)
+        @Html.HiddenFor(model => model.Data_Ativacao)
+
         <div class="display-label">
-             Email: 
-             @Html.DisplayFor(model => model.Usuario.Email)
+            Email:
+            @Html.DisplayFor(model => model.Usuario.Email)
         </div>
 
         <div class="display-label">
-             Tipo: 
-             @Html.DisplayFor(model => model.Tipo.Tipo1)
+            Tipo:
+            @Html.DisplayFor(model => model.Tipo.Tipo1)
         </div>
 
         <div class="display-label">
-             Descrição: 
-             @Html.DisplayFor(model => model.Descricao)
+            Descrição:
+            @Html.DisplayFor(model => model.Descricao)
         </div>
 
         <div class="display-label">
-             Salário: 
-             @Html.DisplayFor(model => model.Salario)
+            Salário:
+            @Html.DisplayFor(model => model.Salario)
         </div>
 
         <div class="display-label">
-             Benefícios: 
-             @Html.DisplayFor(model => model.Beneficios)
+            Benefícios:
+            @Html.DisplayFor(model => model.Beneficios)
         </div>
 
         <div class="display-label">
-             Ativa: 
-             @Html.DisplayFor(model => model.Ativa)
+            Ativa:
+            @Html.DisplayFor(model => model.Ativa)
         </div>
 
         <div class="display-label">
-             Data Cadastro: 
-             @Html.DisplayFor(model => model.Data_Cadastro)
+            Data Cadastro:
+            @Html.DisplayFor(model => model.Data_Cadastro)
         </div>
 
         <div class="display-label">
-                Data Preenchimento: 
-                @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
+            Data Preenchimento:
+            @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
         </div>
 
         <div class="display-label">
-                Data Cancelamento: 
-                @Html.DisplayFor(model => model.Data_Cancelamento)
+            Data Cancelamento:
+            @Html.DisplayFor(model => model.Data_Cancelamento)
         </div>
 
         <div class="display-label">
-                Data Ativação: 
-                @Html.DisplayFor(model => model.Data_Ativacao)
+            Data Ativação:
+            @Html.DisplayFor(model => model.Data_Ativacao)
         </div>
 
         <h4>Candidatos</h4>
@@ -75,12 +85,10 @@
                 </div>
             }
         </div>
+        <input type="submit" value="Delete" />
     </fieldset>
 }
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-}
+
+<p>
+    @Html.ActionLink("Voltar para a lista", "Find")
+</p>

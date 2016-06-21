@@ -11,58 +11,58 @@
     <legend>Vaga</legend>
 
     <div class="display-label">
-            Email: 
-            @Html.DisplayFor(model => model.Usuario.Email)
+        Email:
+        @Html.DisplayFor(model => model.Usuario.Email)
     </div>
 
     <div class="display-label">
-            Tipo: 
-            @Html.DisplayFor(model => model.Tipo.Tipo1)
+        Tipo:
+        @Html.DisplayFor(model => model.Tipo.Tipo1)
     </div>
 
     <div class="display-label">
-            Descrição: 
-            @Html.DisplayFor(model => model.Descricao)
+        Descrição:
+        @Html.DisplayFor(model => model.Descricao)
     </div>
 
     <div class="display-label">
-            Salário: 
-            @Html.DisplayFor(model => model.Salario)
+        Salário:
+        @Html.DisplayFor(model => model.Salario)
     </div>
 
     <div class="display-label">
-            Benefícios: 
-            @Html.DisplayFor(model => model.Beneficios)
+        Benefícios:
+        @Html.DisplayFor(model => model.Beneficios)
     </div>
 
     <div class="display-label">
-            Ativa: 
-            @Html.DisplayFor(model => model.Ativa)
+        Ativa:
+        @Html.DisplayFor(model => model.Ativa)
     </div>
 
     <div class="display-label">
-            Data Cadastro: 
-            @Html.DisplayFor(model => model.Data_Cadastro)
+        Data Cadastro:
+        @Html.DisplayFor(model => model.Data_Cadastro)
     </div>
 
-    @if (int.Parse(Session["tipo_usuario"].ToString()) == 1)
+    @if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 1)
     {
         <div class="display-label">
-                Data Preenchimento: 
-                @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
+            Data Preenchimento:
+            @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
         </div>
 
         <div class="display-label">
-                Data Cancelamento: 
-                @Html.DisplayFor(model => model.Data_Cancelamento)
+            Data Cancelamento:
+            @Html.DisplayFor(model => model.Data_Cancelamento)
         </div>
 
         <div class="display-label">
-                Data Ativação: 
-                @Html.DisplayFor(model => model.Data_Ativacao)
+            Data Ativação:
+            @Html.DisplayFor(model => model.Data_Ativacao)
         </div>
 
-        @using (Html.BeginForm("Details", "Approve", FormMethod.Post))
+        using (Html.BeginForm("Details", "Approve", FormMethod.Post))
         {
             <h4>Candidatos</h4>
             <div class="form-group">
@@ -78,31 +78,21 @@
                     }
                 }
             </div>
-
             <p>
                 <input type="submit" value="Approve" />
             </p>
-        
-
             <p>
                 @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
-                @Html.ActionLink("Back to List", "Index")
+                @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
             </p>
         }
     }
     else
     {
-        @using (Html.BeginForm("Details", "Apply", FormMethod.Post))
+        using (Html.BeginForm("Details", "Apply", FormMethod.Post))
         {
-            <p>
-                <input type="submit" value="Apply" />
-            </p>
-
-            <p>
-                @Html.ActionLink("Back to List", "Index")
-            </p>
-        }
+            <p><input type="submit" value="Apply" /></p>
+        }        
     }
+    <p>@Html.ActionLink("Voltar para a lista", "Find")</p>
 </fieldset>
-}

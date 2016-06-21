@@ -136,9 +136,12 @@ namespace BuscaEmprego.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (vaga.Ativa && vaga.Data_Ativacao == null)
+                    vaga.Data_Ativacao = DateTime.Now;
+
                 db.Entry(vaga).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Find");
             }
             ViewBag.Tipo_Id = new SelectList(db.Tipo, "Id", "Tipo1", vaga.Tipo_Id);
             ViewBag.Empresa_Id = new SelectList(db.Usuario, "Id", "Email", vaga.Empresa_Id);
@@ -163,10 +166,23 @@ namespace BuscaEmprego.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Vaga vaga)
         {
-            //Vaga vaga = db.Vaga.Find(id);
-            db.Vaga.Remove(vaga);
+            vaga.Data_Cancelamento = DateTime.Now;
+            vaga.Ativa = false;
+            db.Entry(vaga).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Find()
+        {
+            var vagas = db.Vaga;
+            if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 1)
+            {
+                if (Session["user_id"] != null)
+                    vagas.Where(x => x.Empresa_Id == int.Parse(Session["user_id"].ToString()));
+            }
+            
+            return View(vagas.ToList());
         }
 
         protected override void Dispose(bool disposing)
