@@ -14,7 +14,10 @@ namespace BuscaEmprego.Helpers
             using (var db = new BuscaEmprego.Database.BuscaEmpregoEntities())
             {
                 foreach (var item in db.Vaga_Usuario.Where(x => x.Vaga_Id == idVaga))
+                {
+                    item.Usuario = db.Usuario.Find(item.Usuario_Id);
                     _candidato.Add(item);
+                }
             }
 
             return _candidato;

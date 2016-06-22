@@ -7,63 +7,68 @@
 
 <h2>Details</h2>
 
-<fieldset>
-    <legend>Vaga</legend>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
 
-    <div class="display-label">
-        Email:
-        @Html.DisplayFor(model => model.Usuario.Email)
-    </div>
+    <h3>@Html.ViewBag.Sucesso</h3>
 
-    <div class="display-label">
-        Tipo:
-        @Html.DisplayFor(model => model.Tipo.Tipo1)
-    </div>
+    <fieldset>
+        <legend>Vaga</legend>
 
-    <div class="display-label">
-        Descrição:
-        @Html.DisplayFor(model => model.Descricao)
-    </div>
-
-    <div class="display-label">
-        Salário:
-        @Html.DisplayFor(model => model.Salario)
-    </div>
-
-    <div class="display-label">
-        Benefícios:
-        @Html.DisplayFor(model => model.Beneficios)
-    </div>
-
-    <div class="display-label">
-        Ativa:
-        @Html.DisplayFor(model => model.Ativa)
-    </div>
-
-    <div class="display-label">
-        Data Cadastro:
-        @Html.DisplayFor(model => model.Data_Cadastro)
-    </div>
-
-    @if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 1)
-    {
         <div class="display-label">
-            Data Preenchimento:
-            @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
+            Email:
+            @Html.DisplayFor(model => model.Usuario.Email)
         </div>
 
         <div class="display-label">
-            Data Cancelamento:
-            @Html.DisplayFor(model => model.Data_Cancelamento)
+            Tipo:
+            @Html.DisplayFor(model => model.Tipo.Tipo1)
         </div>
 
         <div class="display-label">
-            Data Ativação:
-            @Html.DisplayFor(model => model.Data_Ativacao)
+            Descrição:
+            @Html.DisplayFor(model => model.Descricao)
         </div>
 
-        using (Html.BeginForm("Details", "Approve", FormMethod.Post))
+        <div class="display-label">
+            Salário:
+            @Html.DisplayFor(model => model.Salario)
+        </div>
+
+        <div class="display-label">
+            Benefícios:
+            @Html.DisplayFor(model => model.Beneficios)
+        </div>
+
+        <div class="display-label">
+            Ativa:
+            @Html.DisplayFor(model => model.Ativa)
+        </div>
+
+        <div class="display-label">
+            Data Cadastro:
+            @Html.DisplayFor(model => model.Data_Cadastro)
+        </div>
+
+        @if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 1)
         {
+            <div class="display-label">
+                Data Preenchimento:
+                @Html.DisplayFor(model => model.Data_Preenchimento_Vaga)
+            </div>
+
+            <div class="display-label">
+                Data Cancelamento:
+                @Html.DisplayFor(model => model.Data_Cancelamento)
+            </div>
+
+            <div class="display-label">
+                Data Ativação:
+                @Html.DisplayFor(model => model.Data_Ativacao)
+            </div>
+
             <h4>Candidatos</h4>
             <div class="form-group">
                 @{
@@ -72,7 +77,7 @@
                     {
                         string check = candidatos.ElementAt(i).Aprovado ? "checked" : "";
                         <div>
-                            <input type="checkbox" name="check_candidato" value="@candidatos.ElementAt(i).Usuario_Id" @check />
+                            <input type="checkbox" name="check_candidato" value="@candidatos.ElementAt(i).Usuario_Id" @check /> 
                             @Html.DisplayFor(x => candidatos.ElementAt(i).Usuario.Nome)
                         </div>
                     }
@@ -86,13 +91,10 @@
                 @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
             </p>
         }
-    }
-    else
-    {
-        using (Html.BeginForm("Details", "Apply", FormMethod.Post))
+        else
         {
-            <p><input type="submit" value="Apply" /></p>
-        }        
-    }
-    <p>@Html.ActionLink("Voltar para a lista", "Find")</p>
-</fieldset>
+            <p><input type="submit" value="Apply" /></p>   
+        }
+        <p>@Html.ActionLink("Voltar para a lista", "Find")</p>
+    </fieldset>
+}

@@ -25,7 +25,6 @@
                         @if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 1)
                         {
                             <li>@Html.ActionLink("Cadastrar Vaga", "Create", "Vaga")</li>
-                            <li>@Html.ActionLink("Acompanhar Vagas", "AcompanharVaga", "Vaga")</li>
                         }
                     </ul>
                 </nav>

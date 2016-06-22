@@ -31,7 +31,22 @@ namespace BuscaEmprego.Controllers
         // POST: /Vaga/Details/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public void Apply(Vaga vaga)
+        public ActionResult Details(Vaga vaga)
+        {
+            var tipoUsuario = int.Parse(Session["tipo_usuario"].ToString());
+            if (tipoUsuario == 1)
+            {
+                Approve(vaga);
+            }
+            else
+            {
+                Apply(vaga);
+            }
+
+            return View(db.Vaga.Find(vaga.Id));
+        }
+
+        private void Apply(Vaga vaga)
         {
             var idUsuario = int.Parse(Session["user_id"].ToString());
             var vagaUsuario = db.Vaga_Usuario.Where(x => x.Usuario_Id == idUsuario).FirstOrDefault();
@@ -51,11 +66,7 @@ namespace BuscaEmprego.Controllers
             ViewBag.Sucesso = "Candidatura realizada com sucesso.";
         }
 
-        //
-        // POST: /Vaga/Details/
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public void Approve(Vaga vaga)
+        private void Approve(Vaga vaga)
         {
             var ids = Request["check_candidato"].Split(',');
 
@@ -65,14 +76,28 @@ namespace BuscaEmprego.Controllers
                 return;
             }
 
-            for (int i = 0; i < ids.Length; i++)
+            List<Vaga_Usuario> vagaUsuario = db.Vaga_Usuario.Where(x => x.Vaga_Id == vaga.Id).ToList();
+
+            foreach(Vaga_Usuario vu in vagaUsuario)
             {
-                int idUsuario = int.Parse(ids[i]);
-                var vagaUsuario = db.Vaga_Usuario
-                    .Where(x => x.Vaga_Id == vaga.Id && x.Usuario_Id == idUsuario).FirstOrDefault();
-                vagaUsuario.Aprovado = true;
-                vagaUsuario.Data_Aprovacao = DateTime.Now;
-                db.Vaga_Usuario.Add(vagaUsuario);
+                for (int i = 0; i < ids.Length; i++)
+                {
+                    int idUsuario = int.Parse(ids[i]);
+
+                    if (vu.Usuario_Id == idUsuario)
+                    {
+                        vu.Aprovado = true;
+                        vu.Data_Aprovacao = DateTime.Now;
+                    }
+                    else
+                    {
+                        vu.Aprovado = false;
+                        vu.Data_Aprovacao = DateTime.MinValue;
+                    }
+                }
+
+                
+                db.Entry(vu).State = EntityState.Modified;
                 db.SaveChanges();
             }
 
