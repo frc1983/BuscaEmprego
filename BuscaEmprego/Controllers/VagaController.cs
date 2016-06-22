@@ -201,13 +201,27 @@ namespace BuscaEmprego.Controllers
         public ActionResult Find()
         {
             var vagas = db.Vaga;
+            var listVagas = new List<Vaga>();
             if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 1)
             {
                 if (Session["user_id"] != null)
-                    vagas.Where(x => x.Empresa_Id == int.Parse(Session["user_id"].ToString()));
+                {
+                    int idUsuario = int.Parse(Session["user_id"].ToString());
+                    listVagas = vagas.Where(x => x.Empresa_Id == idUsuario).ToList();
+                }
             }
-            
-            return View(vagas.ToList());
+            else
+            {
+                listVagas = vagas.ToList();
+            }
+
+            if (listVagas == null || listVagas.Count < 1)
+            {
+                ModelState.AddModelError(String.Empty, "Não existe Vagas.");
+                listVagas = new List<Vaga>();
+            }
+
+            return View(listVagas);
         }
 
         protected override void Dispose(bool disposing)
