@@ -24,7 +24,7 @@ namespace BuscaEmprego.Database
         public int Empresa_Id { get; set; }
         public int Tipo_Id { get; set; }
         public string Descricao { get; set; }
-        public decimal Salario { get; set; }
+        public string Salario { get; set; }
         public string Beneficios { get; set; }
         public bool Ativa { get; set; }
         public System.DateTime Data_Cadastro { get; set; }

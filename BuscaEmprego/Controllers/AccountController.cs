@@ -75,7 +75,8 @@ namespace BuscaEmprego.Controllers
             {
                 try
                 {
-                    model = ObterUsuarioLogado();
+                    if(model.Id != 0)
+                        model = ObterUsuarioLogado();
 
                     var ids = Request["check_perfil"].Split(',');
                     model.Perfil = new List<Perfil>();

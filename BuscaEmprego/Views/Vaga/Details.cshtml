@@ -91,7 +91,7 @@
                 @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
             </p>
         }
-        else
+        else if(Session["user_id"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 0)
         {
             <p><input type="submit" value="Apply" /></p>   
         }

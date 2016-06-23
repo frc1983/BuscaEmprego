@@ -15,6 +15,14 @@
         <legend>Vaga</legend>
 
         @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Empresa_Id)
+        @Html.HiddenFor(model => model.Tipo_Id)
+        @Html.HiddenFor(model => model.Descricao)
+        @Html.HiddenFor(model => model.Beneficios)
+
+        @Html.HiddenFor(model => model.Data_Cadastro)
+        @Html.HiddenFor(model => model.Data_Preenchimento_Vaga)
+        @Html.HiddenFor(model => model.Data_Ativacao)
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Empresa_Id, "Usuario")
@@ -62,6 +70,21 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.Ativa)
             @Html.ValidationMessageFor(model => model.Ativa)
+        </div>
+
+        <h4>Dados de Perfil</h4>
+        <div class="form-group">
+            @{
+                var perfis = BuscaEmprego.Helpers.PerfilHelper.PopularPerfil();
+                for (int i = 0; i < perfis.Count; i++)
+                {
+                    string check = Model.Perfil.Where(x => x.Id == perfis.ElementAt(i).Id).FirstOrDefault() != null ? "checked" : "";
+                    <div>
+                        <input type="checkbox" name="check_perfil" value="@perfis.ElementAt(i).Id" @check />
+                        @Html.DisplayFor(x => perfis.ElementAt(i).Nome)
+                    </div>
+                }
+            }
         </div>
 
         <p>

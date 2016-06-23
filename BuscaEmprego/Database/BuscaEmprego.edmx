@@ -65,7 +65,7 @@
           <Property Name="Empresa_Id" Type="int" Nullable="false" />
           <Property Name="Tipo_Id" Type="int" Nullable="false" />
           <Property Name="Descricao" Type="text" Nullable="false" />
-          <Property Name="Salario" Type="decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="Salario" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Beneficios" Type="text" Nullable="false" />
           <Property Name="Ativa" Type="bit" Nullable="false" />
           <Property Name="Data_Cadastro" Type="date" Nullable="false" />
@@ -144,18 +144,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Vaga_Perfil_Perfil">
-          <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
-          <End Role="Vaga_Perfil" Type="Self.Vaga_Perfil" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Perfil">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Vaga_Perfil">
-              <PropertyRef Name="Perfil_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Vaga_Perfil_Vaga">
           <End Role="Vaga" Type="Self.Vaga" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -231,10 +219,6 @@
           <AssociationSet Name="Vaga_Empresa" Association="Self.Vaga_Empresa">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Vaga" EntitySet="Vaga" />
-          </AssociationSet>
-          <AssociationSet Name="Vaga_Perfil_Perfil" Association="Self.Vaga_Perfil_Perfil">
-            <End Role="Perfil" EntitySet="Perfil" />
-            <End Role="Vaga_Perfil" EntitySet="Vaga_Perfil" />
           </AssociationSet>
           <AssociationSet Name="Vaga_Perfil_Vaga" Association="Self.Vaga_Perfil_Vaga">
             <End Role="Vaga" EntitySet="Vaga" />
@@ -319,7 +303,7 @@
           <Property Name="Empresa_Id" Type="Int32" Nullable="false" />
           <Property Name="Tipo_Id" Type="Int32" Nullable="false" />
           <Property Name="Descricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Salario" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="Salario" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="Beneficios" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Ativa" Type="Boolean" Nullable="false" />
           <Property Name="Data_Cadastro" Type="DateTime" Nullable="false" Precision="0" />

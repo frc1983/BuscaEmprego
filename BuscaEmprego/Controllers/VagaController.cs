@@ -111,9 +111,7 @@ namespace BuscaEmprego.Controllers
             var model = new Vaga();
             ViewBag.Tipo_Id = new SelectList(db.Tipo, "Id", "Tipo1");
             ViewBag.Empresa_Id = new SelectList(db.Usuario, "Id", "Email");
-
-            model.Perfil = PerfilHelper.PopularPerfil().ToList();
-
+            
             return View(model);
         }
 
@@ -125,6 +123,14 @@ namespace BuscaEmprego.Controllers
         {
             if (ModelState.IsValid && Session["user_id"] != null)
             {
+                var ids = Request["check_perfil"].Split(',');
+                vaga.Perfil = new List<Perfil>();
+                for (int i = 0; i < ids.Length; i++)
+                {
+                    int id = int.Parse(ids[i]);
+                    vaga.Perfil.Add(db.Perfil.Where(x => x.Id == id).First());
+                }
+
                 var idUsuario = int.Parse(Session["user_id"].ToString());
                 vaga.Usuario = db.Usuario.Where(x => x.Id == idUsuario).FirstOrDefault();
                 vaga.Data_Cadastro = DateTime.Now;
@@ -161,8 +167,23 @@ namespace BuscaEmprego.Controllers
         {
             if (ModelState.IsValid)
             {
+                vaga = db.Vaga.Where(x => x.Id == vaga.Id).FirstOrDefault();
+                var ids = Request["check_perfil"].Split(',');
+                vaga.Perfil = new List<Perfil>();
+                for (int i = 0; i < ids.Length; i++)
+                {
+                    int id = int.Parse(ids[i]);
+                    vaga.Perfil.Add(db.Perfil.Where(x => x.Id == id).First());
+                }
+
                 if (vaga.Ativa && vaga.Data_Ativacao == null)
+                {
                     vaga.Data_Ativacao = DateTime.Now;
+                    vaga.Data_Cancelamento = null;
+                }
+
+                if (!vaga.Ativa)
+                    vaga.Data_Cancelamento = DateTime.Now;
 
                 db.Entry(vaga).State = EntityState.Modified;
                 db.SaveChanges();
