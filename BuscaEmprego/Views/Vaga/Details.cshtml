@@ -1,21 +1,31 @@
 ﻿@model BuscaEmprego.Database.Vaga
 
 @{
-    ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Detalhes</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @Html.ValidationSummary()
 
     <h3>@Html.ViewBag.Sucesso</h3>
 
     <fieldset>
         <legend>Vaga</legend>
+
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Empresa_Id)
+        @Html.HiddenFor(model => model.Tipo_Id)
+        @Html.HiddenFor(model => model.Descricao)
+        @Html.HiddenFor(model => model.Beneficios)
+        @Html.HiddenFor(model => model.Salario)
+
+        @Html.HiddenFor(model => model.Data_Cadastro)
+        @Html.HiddenFor(model => model.Data_Preenchimento_Vaga)
+        @Html.HiddenFor(model => model.Data_Ativacao)
 
         <div class="display-label">
             Email:
@@ -68,32 +78,56 @@
                 Data Ativação:
                 @Html.DisplayFor(model => model.Data_Ativacao)
             </div>
+        }
 
-            <h4>Candidatos</h4>
-            <div class="form-group">
-                @{
-                    var candidatos = BuscaEmprego.Helpers.CandidatoHelper.PopularCandidato(Model.Id);
-                    for (int i = 0; i < candidatos.Count; i++)
-                    {
-                        string check = candidatos.ElementAt(i).Aprovado ? "checked" : "";
-                        <div>
-                            <input type="checkbox" name="check_candidato" value="@candidatos.ElementAt(i).Usuario_Id" @check /> 
-                            @Html.DisplayFor(x => candidatos.ElementAt(i).Usuario.Nome)
-                        </div>
-                    }
+        <h4>Dados de Perfil</h4>
+        <div class="display-label">
+            @{
+                var perfis = BuscaEmprego.Helpers.PerfilHelper.PopularPerfil();
+                for (int i = 0; i < perfis.Count; i++)
+                {
+                    string check = Model.Perfil.Where(x => x.Id == perfis.ElementAt(i).Id).FirstOrDefault() != null ? "checked" : "";
+                    <div>
+                        <input type="checkbox" name="check_perfil" disabled="disabled" value="@perfis.ElementAt(i).Id" @check />
+                        @Html.DisplayFor(x => perfis.ElementAt(i).Nome)
+                    </div>
                 }
-            </div>
+            }
+        </div>
+
+        @if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 1)
+        {
+            if (BuscaEmprego.Helpers.CandidatoHelper.PopularCandidato(Model.Id).Count > 0)
+            {
+                <h4>Candidatos</h4>
+                <div class="form-group">
+                    @{
+                        var candidatos = BuscaEmprego.Helpers.CandidatoHelper.PopularCandidato(Model.Id);
+                        for (int i = 0; i < candidatos.Count; i++)
+                        {
+                            string check = candidatos.ElementAt(i).Aprovado ? "checked" : "";
+                            <div>
+                                <input type="checkbox" name="check_candidato" value="@candidatos.ElementAt(i).Usuario_Id" @check /> 
+                                @Html.DisplayFor(x => candidatos.ElementAt(i).Usuario.Nome)
+                            </div>
+                        }
+                    }
+                </div>
+                if (Model.Ativa)
+                {
+                    <p>
+                        <input type="submit" value="Aprovar" />
+                    </p>
+                }
+            }
             <p>
-                <input type="submit" value="Approve" />
-            </p>
-            <p>
-                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+                @Html.ActionLink("Editar", "Edit", new { id = Model.Id }) |
+                @Html.ActionLink("Deletar", "Delete", new { id = Model.Id })
             </p>
         }
-        else if(Session["user_id"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 0)
+        else if(Session["user_id"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 2)
         {
-            <p><input type="submit" value="Apply" /></p>   
+            <p><input type="submit" value="Candidatar" /></p>   
         }
         <p>@Html.ActionLink("Voltar para a lista", "Find")</p>
     </fieldset>

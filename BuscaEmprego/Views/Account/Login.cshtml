@@ -1,13 +1,5 @@
 ﻿@model BuscaEmprego.Database.Usuario
 
-@{
-    ViewBag.Title = "Login";
-}
-
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
-
 <h2>Entre com sua conta no BuscaEmprego.</h2>
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()

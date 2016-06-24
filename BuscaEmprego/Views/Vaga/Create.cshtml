@@ -1,7 +1,6 @@
 ﻿@model BuscaEmprego.Database.Vaga
 
 @{
-    ViewBag.Title = "Criar Vaga";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +9,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @Html.ValidationSummary()
 
     <fieldset>
         <legend>Vaga</legend>
@@ -37,7 +36,7 @@
             @Html.LabelFor(model => model.Salario)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Salario, "Salario")
+            @Html.EditorFor(model => model.Salario)
             @Html.ValidationMessageFor(model => model.Salario)
         </div>
 
@@ -65,13 +64,13 @@
         </div>
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Criar" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Voltar para o inicio", "Index")
 </div>
 
 @section Scripts {

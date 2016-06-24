@@ -30,7 +30,7 @@ namespace BuscaEmprego.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(Usuario model)
+        public ActionResult Login(Usuario_Perfil model)
         {
             ModelState.Remove("Nome");
             ModelState.Remove("CPF_CNPJ");
@@ -61,7 +61,7 @@ namespace BuscaEmprego.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var usuarioModel = ObterUsuarioLogado();     
+            var usuarioModel = ObterUsuarioLogado();  
 
             return View(usuarioModel);
         }
@@ -69,15 +69,12 @@ namespace BuscaEmprego.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(Usuario model)
+        public ActionResult Register(Usuario_Perfil model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if(model.Id != 0)
-                        model = ObterUsuarioLogado();
-
                     var ids = Request["check_perfil"].Split(',');
                     model.Perfil = new List<Perfil>();
                     for (int i = 0; i < ids.Length; i++)
@@ -86,7 +83,22 @@ namespace BuscaEmprego.Controllers
                         model.Perfil.Add(db.Perfil.Where(x => x.Id == id).First());
                     }
 
-                    if(model.Id != 0)
+                    if (model.Endereco_Id != 0)
+                    {
+                        Endereco endereco = db.Endereco.Find(model.Endereco_Id);
+                        endereco.CEP = model.Endereco.CEP;
+                        endereco.Complemento = model.Endereco.Complemento;
+                        endereco.Logradouro = model.Endereco.Logradouro;
+                        endereco.Telefone = model.Endereco.Telefone;
+                        endereco.Tipo = model.Endereco.Tipo;
+
+                        db.Entry(endereco).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        model.Endereco = db.Endereco.Find(model.Endereco_Id);
+                    }
+
+                    if (model.Id != 0)
                         db.Entry(model).State = EntityState.Modified;
                     else
                         db.Usuario.Add(model);
@@ -105,9 +117,9 @@ namespace BuscaEmprego.Controllers
             return View(model);
         }
 
-        private Usuario ObterUsuarioLogado()
+        private Usuario_Perfil ObterUsuarioLogado()
         {
-            var usuarioModel = new Usuario();
+            var usuarioModel = new Usuario_Perfil();
 
             if (Session["user_id"] != null && int.Parse(Session["user_id"].ToString()) != 0)
             {
@@ -118,7 +130,7 @@ namespace BuscaEmprego.Controllers
             return usuarioModel;
         }
 
-        private void SetLoginSession(Usuario model)
+        private void SetLoginSession(Usuario_Perfil model)
         {
             Session["user_name"] = model.Email;
             Session["user_id"] = model.Id;

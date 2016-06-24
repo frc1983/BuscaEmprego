@@ -68,7 +68,7 @@ namespace BuscaEmprego.Controllers
 
         private void Approve(Vaga vaga)
         {
-            var ids = Request["check_candidato"].Split(',');
+            var ids = Request["check_candidato"] == null ? null : Request["check_candidato"].Split(',');
 
             if (ids == null || ids.Length < 1)
             {
@@ -95,9 +95,13 @@ namespace BuscaEmprego.Controllers
                         vu.Data_Aprovacao = DateTime.MinValue;
                     }
                 }
-
                 
                 db.Entry(vu).State = EntityState.Modified;
+                db.SaveChanges();
+
+                vaga = db.Vaga.Find(vaga.Id);
+                vaga.Data_Preenchimento_Vaga = DateTime.Now;
+                db.Entry(vaga).State = EntityState.Modified;
                 db.SaveChanges();
             }
 
@@ -167,7 +171,7 @@ namespace BuscaEmprego.Controllers
         {
             if (ModelState.IsValid)
             {
-                vaga = db.Vaga.Where(x => x.Id == vaga.Id).FirstOrDefault();
+                //vaga = db.Vaga.Where(x => x.Id == vaga.Id).FirstOrDefault();
                 var ids = Request["check_perfil"].Split(',');
                 vaga.Perfil = new List<Perfil>();
                 for (int i = 0; i < ids.Length; i++)

@@ -8,7 +8,7 @@ using System.ComponentModel;
 namespace BuscaEmprego.Database
 {
     [MetadataType(typeof(UsuarioMetaData))]
-    public partial class Usuario
+    public partial class Usuario_Perfil
     {
     }
 

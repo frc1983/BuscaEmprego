@@ -1,17 +1,16 @@
 ﻿@model BuscaEmprego.Database.Vaga
 
 @{
-    ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>Deletar</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Tem certeza de que deseja deletar esta vaga?</h3>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @Html.ValidationSummary()
     <fieldset>
         <legend>Vaga</legend>
 
@@ -85,7 +84,7 @@
                 </div>
             }
         </div>
-        <input type="submit" value="Delete" />
+        <input type="submit" value="Deletar" />
     </fieldset>
 }
 

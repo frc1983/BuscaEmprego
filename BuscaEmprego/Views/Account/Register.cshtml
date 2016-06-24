@@ -1,87 +1,79 @@
 ﻿@model BuscaEmprego.Database.Usuario
-@{
-    ViewBag.Title = "Register";
-}
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>Create a new account.</h2>
-</hgroup>
-
+<h2>Crie uma conta no BuscaEmprego</h2>
 @using (Html.BeginForm("Register", "Account", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
     @Html.HiddenFor(x => x.Id)
-    <h4>Criar uma conta no BuscaEmprego</h4>
-    <hr />
+    @Html.HiddenFor(x => x.Endereco_Id)
+
     <fieldset>
-        <h4>Dados Pessoais</h4>
-        <legend>Insira os dados de acesso ao BuscaEmprego</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.Email)
-                @Html.TextBoxFor(m => m.Email)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Senha)
-                @Html.PasswordFor(m => m.Senha)
-            </li>
-        </ol>
-        <h4>Dados Pessoais</h4>
+        <h4>Insira os dados de acesso ao BuscaEmprego</h4>
+
         <div class="form-group">
-            @Html.LabelFor(m => m.Tipo_Usuario, new { @class = "control-label" })
-            @Html.DropDownListFor(m => m.Tipo_Usuario_Id, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoUsuario(Model != null ? Model.Tipo_Usuario_Id : 0),
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Senha)
+            @Html.PasswordFor(m => m.Senha, new{ value = Model.Senha, @class = "form-control" })
+        </div>
+
+            <h4>Dados Pessoais</h4>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Tipo_Usuario, new { @class = "control-label" })
+                @Html.DropDownListFor(m => m.Tipo_Usuario_Id, BuscaEmprego.Helpers.DropDownHelper.GetDropdownTipoUsuario(Model != null ? Model.Tipo_Usuario_Id : 0),
         new { @class = "form-control", id = "usuario-tipo" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Nome, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.Nome, new { @class = "form-control" })
-        </div>
-        <div class="form-group" id="usuario-cpf-control">
-            @Html.LabelFor(m => m.CPF_CNPJ, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.CPF_CNPJ, new { @class = "form-control", id = "usuario-cpf", maxlength = 14 })
-        </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Nome, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Nome, new { @class = "form-control" })
+            </div>
+            <div class="form-group" id="usuario-cpf-control">
+                @Html.LabelFor(m => m.CPF_CNPJ, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.CPF_CNPJ, new { @class = "form-control", id = "usuario-cpf", maxlength = 14 })
+            </div>
 
-        <h4>Dados de Perfil</h4>
-        <div class="form-group">
-            @{
-                var perfis = BuscaEmprego.Helpers.PerfilHelper.PopularPerfil();
-                for (int i = 0; i < perfis.Count; i++)
-                {
-                    string check = Model.Perfil.Where(x => x.Id == perfis.ElementAt(i).Id).FirstOrDefault() != null ? "checked" : "";
-                    <div>
-                        <input type="checkbox" name="check_perfil" value="@perfis.ElementAt(i).Id" @check />
-                        @Html.DisplayFor(x => perfis.ElementAt(i).Nome)
-                    </div>
+            <h4>Dados de Perfil</h4>
+            <div class="form-group">
+                @{
+                    var perfis = BuscaEmprego.Helpers.PerfilHelper.PopularPerfil();
+                    for (int i = 0; i < perfis.Count; i++)
+                    {
+                        string check = Model.Perfil.Where(x => x.Id == perfis.ElementAt(i).Id).FirstOrDefault() != null ? "checked" : "";
+                        <div>
+                            <input type="checkbox" name="check_perfil" value="@perfis.ElementAt(i).Id" @check />
+                            @Html.DisplayFor(x => perfis.ElementAt(i).Nome)
+                        </div>
+                    }
                 }
-            }
-        </div>
+            </div>
 
-        <h4>Dados de Localização</h4>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Endereco.CEP, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.Endereco.CEP, new { @class = "form-control" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Endereco.Logradouro, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.Endereco.Logradouro, new { @class = "form-control" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Endereco.Complemento, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.Endereco.Complemento, new { @class = "form-control" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Endereco.Tipo, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.Endereco.Tipo, new { @class = "form-control" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Endereco.Telefone, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.Endereco.Telefone, new { @class = "form-control" })
-        </div>
-        <input type="submit" value="Register" />
-    </fieldset>
+            <h4>Dados de Localização</h4>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Endereco.CEP, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Endereco.CEP, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Endereco.Logradouro, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Endereco.Logradouro, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Endereco.Complemento, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Endereco.Complemento, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Endereco.Tipo, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Endereco.Tipo, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Endereco.Telefone, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Endereco.Telefone, new { @class = "form-control" })
+            </div>
+            <input type="submit" value="Registrar" />
+</fieldset>
 }
 
 @section Scripts {

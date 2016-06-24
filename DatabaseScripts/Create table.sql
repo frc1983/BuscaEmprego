@@ -56,7 +56,7 @@ CREATE TABLE Vaga (
     Empresa_Id int NOT NULL,
     Tipo_Id int NOT NULL,
     Descricao text NOT NULL,
-    Salario decimal(6,2) NOT NULL,
+    Salario varchar(255) NOT NULL,
     Beneficios text NOT NULL,
     Ativa bit NOT NULL,
     Data_Cadastro date NOT NULL,
