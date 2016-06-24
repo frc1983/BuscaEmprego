@@ -30,7 +30,7 @@ namespace BuscaEmprego.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(Usuario_Perfil model)
+        public ActionResult Login(Usuario model)
         {
             ModelState.Remove("Nome");
             ModelState.Remove("CPF_CNPJ");
@@ -69,7 +69,7 @@ namespace BuscaEmprego.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(Usuario_Perfil model)
+        public ActionResult Register(Usuario model)
         {
             if (ModelState.IsValid)
             {
@@ -117,9 +117,9 @@ namespace BuscaEmprego.Controllers
             return View(model);
         }
 
-        private Usuario_Perfil ObterUsuarioLogado()
+        private Usuario ObterUsuarioLogado()
         {
-            var usuarioModel = new Usuario_Perfil();
+            var usuarioModel = new Usuario();
 
             if (Session["user_id"] != null && int.Parse(Session["user_id"].ToString()) != 0)
             {
@@ -130,7 +130,7 @@ namespace BuscaEmprego.Controllers
             return usuarioModel;
         }
 
-        private void SetLoginSession(Usuario_Perfil model)
+        private void SetLoginSession(Usuario model)
         {
             Session["user_name"] = model.Email;
             Session["user_id"] = model.Id;
