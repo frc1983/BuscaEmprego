@@ -68,10 +68,10 @@
           <Property Name="Salario" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Beneficios" Type="text" Nullable="false" />
           <Property Name="Ativa" Type="bit" Nullable="false" />
-          <Property Name="Data_Cadastro" Type="date" Nullable="false" />
-          <Property Name="Data_Preenchimento_Vaga" Type="date" />
-          <Property Name="Data_Cancelamento" Type="date" />
-          <Property Name="Data_Ativacao" Type="date" />
+          <Property Name="Data_Cadastro" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Data_Preenchimento_Vaga" Type="datetime2" Precision="7" />
+          <Property Name="Data_Cancelamento" Type="datetime2" Precision="7" />
+          <Property Name="Data_Ativacao" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="Vaga_Perfil">
           <Key>
@@ -89,8 +89,8 @@
           <Property Name="Vaga_Id" Type="int" Nullable="false" />
           <Property Name="Usuario_Id" Type="int" Nullable="false" />
           <Property Name="Aprovado" Type="bit" Nullable="false" />
-          <Property Name="Data_Candidatura" Type="date" Nullable="false" />
-          <Property Name="Data_Aprovacao" Type="date" Nullable="false" />
+          <Property Name="Data_Candidatura" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Data_Aprovacao" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <Association Name="Usuario_Endereco">
           <End Role="Endereco" Type="Self.Endereco" Multiplicity="1">
@@ -306,10 +306,10 @@
           <Property Name="Salario" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
           <Property Name="Beneficios" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Ativa" Type="Boolean" Nullable="false" />
-          <Property Name="Data_Cadastro" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Data_Preenchimento_Vaga" Type="DateTime" Precision="0" />
-          <Property Name="Data_Cancelamento" Type="DateTime" Precision="0" />
-          <Property Name="Data_Ativacao" Type="DateTime" Precision="0" />
+          <Property Name="Data_Cadastro" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Data_Preenchimento_Vaga" Type="DateTime" Precision="7" />
+          <Property Name="Data_Cancelamento" Type="DateTime" Precision="7" />
+          <Property Name="Data_Ativacao" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Tipo" Relationship="Self.Vaga_Vaga_Tipo" FromRole="Vaga" ToRole="Tipo" />
           <NavigationProperty Name="Usuario" Relationship="Self.Vaga_Empresa" FromRole="Vaga" ToRole="Usuario" />
           <NavigationProperty Name="Vaga_Usuario" Relationship="Self.Vaga_Usuario_Vaga" FromRole="Vaga" ToRole="Vaga_Usuario" />
@@ -323,8 +323,8 @@
           <Property Name="Vaga_Id" Type="Int32" Nullable="false" />
           <Property Name="Usuario_Id" Type="Int32" Nullable="false" />
           <Property Name="Aprovado" Type="Boolean" Nullable="false" />
-          <Property Name="Data_Candidatura" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Data_Aprovacao" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Data_Candidatura" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Data_Aprovacao" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Usuario" Relationship="Self.Vaga_Usuario_Usuario" FromRole="Vaga_Usuario" ToRole="Usuario" />
           <NavigationProperty Name="Vaga" Relationship="Self.Vaga_Usuario_Vaga" FromRole="Vaga_Usuario" ToRole="Vaga" />
         </EntityType>

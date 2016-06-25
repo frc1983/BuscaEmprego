@@ -18,7 +18,7 @@
 }
 <h3>Vagas disponíveis no site:</h3>
 @{
-    var vagas = ViewBag.VagasPerfil as List<BuscaEmprego.Database.Vaga>;
+    var vagas = ViewBag.Vagas as List<BuscaEmprego.Database.Vaga>;
     if (vagas.Count > 0)
     {
         foreach (var item in vagas)
