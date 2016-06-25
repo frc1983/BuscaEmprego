@@ -251,16 +251,19 @@ namespace BuscaEmprego.Controllers
         {
             var vagas = db.Vaga;
             var listVagas = new List<Vaga>();
+
+            CancelByDate();
+
             if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 1)
             {
                 if (Session["user_id"] != null)
                 {
                     int idUsuario = int.Parse(Session["user_id"].ToString());
-                    listVagas = vagas.Where(x => x.Empresa_Id == idUsuario).ToList();
+                    listVagas = vagas.Where(x => x.Empresa_Id == idUsuario && x.Data_Cancelamento == null).ToList();
                 }
             }
             else
-                listVagas = vagas.Where(x => x.Ativa).ToList();
+                listVagas = vagas.Where(x => x.Ativa && x.Data_Cancelamento == null).ToList();
 
             if (listVagas == null || listVagas.Count < 1)
             {
@@ -269,6 +272,23 @@ namespace BuscaEmprego.Controllers
             }
 
             return View(listVagas);
+        }
+
+        private void CancelByDate()
+        {
+            var listVagas = db.Vaga.Where(x => x.Data_Cancelamento == null).ToList();
+
+            foreach (Vaga vaga in listVagas)
+            {
+                if ((vaga.Data_Cadastro.AddDays(30)) < DateTime.Now)
+                {
+                    vaga.Data_Cancelamento = DateTime.Now;
+                    vaga.Ativa = false;
+                    db.Entry(vaga).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+
         }
 
         protected override void Dispose(bool disposing)
