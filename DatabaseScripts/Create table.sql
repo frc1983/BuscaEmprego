@@ -59,10 +59,10 @@ CREATE TABLE Vaga (
     Salario varchar(255) NOT NULL,
     Beneficios text NOT NULL,
     Ativa bit NOT NULL,
-    Data_Cadastro date NOT NULL,
-    Data_Preenchimento_Vaga date NULL,
-    Data_Cancelamento date NULL,
-    Data_Ativacao date NULL,
+    Data_Cadastro datetime NOT NULL,
+    Data_Preenchimento_Vaga datetime NULL,
+    Data_Cancelamento datetime NULL,
+    Data_Ativacao datetime NULL,
     CONSTRAINT Vaga_pk PRIMARY KEY (Id)
 );
 
@@ -78,8 +78,8 @@ CREATE TABLE Vaga_Usuario (
     Vaga_Id int NOT NULL,
     Usuario_Id int NOT NULL,
     Aprovado bit NOT NULL DEFAULT 0,
-    Data_Candidatura date NOT NULL,
-    Data_Aprovacao date NOT NULL,
+    Data_Candidatura datetime NOT NULL,
+    Data_Aprovacao datetime NOT NULL,
     CONSTRAINT Vaga_Usuario_pk PRIMARY KEY (Vaga_Id,Usuario_Id)
 );
 
