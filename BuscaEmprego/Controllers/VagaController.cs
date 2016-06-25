@@ -35,13 +35,9 @@ namespace BuscaEmprego.Controllers
         {
             var tipoUsuario = int.Parse(Session["tipo_usuario"].ToString());
             if (tipoUsuario == 1)
-            {
                 Approve(vaga);
-            }
             else
-            {
                 Apply(vaga);
-            }
 
             return View(db.Vaga.Find(vaga.Id));
         }
@@ -63,7 +59,7 @@ namespace BuscaEmprego.Controllers
             db.Vaga_Usuario.Add(vagaUsuario);
             db.SaveChanges();
 
-            ViewBag.Sucesso = "Candidatura realizada com sucesso.";
+            TempData["sucesso"] = "Candidatura realizada com sucesso.";
         }
 
         private void Approve(Vaga vaga)
@@ -105,7 +101,7 @@ namespace BuscaEmprego.Controllers
                 db.SaveChanges();
             }
 
-            ViewBag.Sucesso = "Aprovação dos candidatos realizada com sucesso.";
+            TempData["sucesso"] = "Aprovação dos candidatos realizada com sucesso.";
         }
 
         //
@@ -127,25 +123,34 @@ namespace BuscaEmprego.Controllers
         {
             if (ModelState.IsValid && Session["user_id"] != null)
             {
-                var ids = Request["check_perfil"].Split(',');
-                vaga.Perfil = new List<Perfil>();
-                for (int i = 0; i < ids.Length; i++)
+                try
                 {
-                    int id = int.Parse(ids[i]);
-                    vaga.Perfil.Add(db.Perfil.Where(x => x.Id == id).First());
-                }
+                    var ids = Request["check_perfil"].Split(',');
+                    vaga.Perfil = new List<Perfil>();
+                    for (int i = 0; i < ids.Length; i++)
+                    {
+                        int id = int.Parse(ids[i]);
+                        vaga.Perfil.Add(db.Perfil.Where(x => x.Id == id).First());
+                    }
 
-                var idUsuario = int.Parse(Session["user_id"].ToString());
-                vaga.Usuario = db.Usuario.Where(x => x.Id == idUsuario).FirstOrDefault();
-                vaga.Data_Cadastro = DateTime.Now;
-                db.Vaga.Add(vaga);
-                db.SaveChanges();
-                return RedirectToAction("Create");
+                    var idUsuario = int.Parse(Session["user_id"].ToString());
+                    vaga.Usuario = db.Usuario.Where(x => x.Id == idUsuario).FirstOrDefault();
+                    vaga.Data_Cadastro = DateTime.Now;
+                    db.Vaga.Add(vaga);
+                    db.SaveChanges();
+
+                    TempData["sucesso"] = "Vaga criada com sucesso.";
+
+                    return RedirectToAction("Create");
+                } catch (Exception)
+                {
+                    ViewBag.Tipo_Id = new SelectList(db.Tipo, "Id", "Tipo1", vaga.Tipo_Id);
+                    ViewBag.Empresa_Id = new SelectList(db.Usuario, "Id", "Email", vaga.Empresa_Id);
+                    vaga.Perfil = PerfilHelper.PopularPerfil().ToList();
+                    TempData["erro"] = "Erro ao criar a vaga.";
+                }
             }
 
-            ViewBag.Tipo_Id = new SelectList(db.Tipo, "Id", "Tipo1", vaga.Tipo_Id);
-            ViewBag.Empresa_Id = new SelectList(db.Usuario, "Id", "Email", vaga.Empresa_Id);
-            vaga.Perfil = PerfilHelper.PopularPerfil().ToList();
             return View(vaga);
         }
 
@@ -171,30 +176,40 @@ namespace BuscaEmprego.Controllers
         {
             if (ModelState.IsValid)
             {
-                //vaga = db.Vaga.Where(x => x.Id == vaga.Id).FirstOrDefault();
-                var ids = Request["check_perfil"].Split(',');
-                vaga.Perfil = new List<Perfil>();
-                for (int i = 0; i < ids.Length; i++)
+                try
                 {
-                    int id = int.Parse(ids[i]);
-                    vaga.Perfil.Add(db.Perfil.Where(x => x.Id == id).First());
-                }
+                    var ids = Request["check_perfil"].Split(',');
+                    vaga.Perfil = new List<Perfil>();
+                    for (int i = 0; i < ids.Length; i++)
+                    {
+                        int id = int.Parse(ids[i]);
+                        vaga.Perfil.Add(db.Perfil.Where(x => x.Id == id).First());
+                    }
 
-                if (vaga.Ativa && vaga.Data_Ativacao == null)
+                    if (vaga.Ativa && vaga.Data_Ativacao == null)
+                    {
+                        vaga.Data_Ativacao = DateTime.Now;
+                        vaga.Data_Cancelamento = null;
+                    }
+
+                    if (!vaga.Ativa)
+                        vaga.Data_Cancelamento = DateTime.Now;
+
+                    db.Entry(vaga).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    TempData["sucesso"] = "Vaga modificada com sucesso.";
+
+                    return RedirectToAction("Find");
+                }
+                catch (Exception)
                 {
-                    vaga.Data_Ativacao = DateTime.Now;
-                    vaga.Data_Cancelamento = null;
+                    ViewBag.Tipo_Id = new SelectList(db.Tipo, "Id", "Tipo1", vaga.Tipo_Id);
+                    ViewBag.Empresa_Id = new SelectList(db.Usuario, "Id", "Email", vaga.Empresa_Id);
+                    TempData["erro"] = "Erro ao modificar a vaga.";
                 }
-
-                if (!vaga.Ativa)
-                    vaga.Data_Cancelamento = DateTime.Now;
-
-                db.Entry(vaga).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Find");
             }
-            ViewBag.Tipo_Id = new SelectList(db.Tipo, "Id", "Tipo1", vaga.Tipo_Id);
-            ViewBag.Empresa_Id = new SelectList(db.Usuario, "Id", "Email", vaga.Empresa_Id);
+            
             return View(vaga);
         }
 
@@ -216,11 +231,20 @@ namespace BuscaEmprego.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Vaga vaga)
         {
-            vaga.Data_Cancelamento = DateTime.Now;
-            vaga.Ativa = false;
-            db.Entry(vaga).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                vaga.Data_Cancelamento = DateTime.Now;
+                vaga.Ativa = false;
+                db.Entry(vaga).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["sucesso"] = "Vaga removida com sucesso.";
+            }
+            catch
+            {
+                TempData["erro"] = "Erro ao remover a vaga.";
+            }
+            
+            return RedirectToAction("Find");
         }
 
         public ActionResult Find()
@@ -236,13 +260,11 @@ namespace BuscaEmprego.Controllers
                 }
             }
             else
-            {
-                listVagas = vagas.ToList();
-            }
+                listVagas = vagas.Where(x => x.Ativa).ToList();
 
             if (listVagas == null || listVagas.Count < 1)
             {
-                ModelState.AddModelError(String.Empty, "Não existe Vagas.");
+                ModelState.AddModelError(String.Empty, "Não existem vagas cadastradas.");
                 listVagas = new List<Vaga>();
             }
 

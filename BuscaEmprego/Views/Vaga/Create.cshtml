@@ -6,6 +6,8 @@
 
 <h2>Crie uma nova oportunidade no BuscaEmprego</h2>
 
+@{ Html.RenderPartial("~/Views/Shared/_MessagePartial.cshtml"); }
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()

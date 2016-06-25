@@ -6,11 +6,13 @@
 
 <h2>Vagas disponíveis</h2>
 
+@{ Html.RenderPartial("~/Views/Shared/_MessagePartial.cshtml"); }
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
-    @foreach (var item in Model)
+    foreach (var item in Model)
     {
         <div class="card">
             @Html.Label(item.Descricao)
