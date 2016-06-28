@@ -14,11 +14,11 @@
 
         <div class="form-group">
             @Html.LabelFor(m => m.Email)
-            @Html.TextBoxFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Senha)
-            @Html.PasswordFor(m => m.Senha, new{ value = Model.Senha, @class = "form-control" })
+            @Html.PasswordFor(m => m.Senha, new { value = Model.Senha, @class = "form-control" })
         </div>
 
             <h4>Dados Pessoais</h4>
@@ -39,15 +39,15 @@
             <h4>Dados de Perfil</h4>
             <div class="form-group">
                 @{
-                    var perfis = BuscaEmprego.Helpers.PerfilHelper.PopularPerfil();
-                    for (int i = 0; i < perfis.Count; i++)
-                    {
-                        string check = Model.Perfil.Where(x => x.Id == perfis.ElementAt(i).Id).FirstOrDefault() != null ? "checked" : "";
+    var perfis = BuscaEmprego.Helpers.PerfilHelper.PopularPerfil();
+    for (int i = 0; i < perfis.Count; i++)
+    {
+        string check = Model.Perfil.Where(x => x.Id == perfis.ElementAt(i).Id).FirstOrDefault() != null ? "checked" : "";
                         <div>
                             <input type="checkbox" name="check_perfil" value="@perfis.ElementAt(i).Id" @check />
                             @Html.DisplayFor(x => perfis.ElementAt(i).Nome)
                         </div>
-                    }
+    }
                 }
             </div>
 

@@ -1,6 +1,10 @@
 ﻿@model BuscaEmprego.Database.Usuario
 
-<h2>Entre com sua conta no BuscaEmprego.</h2>
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Entre com sua conta no BuscaEmprego</h2>
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -9,17 +13,18 @@
         <ol>
             <li>
                 @Html.LabelFor(m => m.Email)
-                @Html.TextBoxFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control col-md-6" })
                 @Html.ValidationMessageFor(m => m.Email)
             </li>
             <li>
                 @Html.LabelFor(m => m.Senha)
-                @Html.PasswordFor(m => m.Senha)
+                @Html.PasswordFor(m => m.Senha, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Senha)
             </li>
         </ol>
         <input type="submit" value="Entrar" />
     </fieldset>
+    <p>&nbsp;</p>
     <p>
         @Html.ActionLink("Registre-se", "Register") se não tem uma conta.
     </p>

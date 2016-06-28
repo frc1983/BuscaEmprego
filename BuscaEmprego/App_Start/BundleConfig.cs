@@ -32,7 +32,7 @@ namespace BuscaEmprego
                 "~/Content/bootstrap.css"
                 ));
 
-            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
+            /*bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
                         "~/Content/themes/base/jquery.ui.resizable.css",
                         "~/Content/themes/base/jquery.ui.selectable.css",
@@ -44,7 +44,7 @@ namespace BuscaEmprego
                         "~/Content/themes/base/jquery.ui.tabs.css",
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
-                        "~/Content/themes/base/jquery.ui.theme.css"));
+                        "~/Content/themes/base/jquery.ui.theme.css"));*/
         }
     }
 }
