@@ -53,8 +53,12 @@ namespace BuscaEmprego.Controllers
                     if (usuarioLogado != null)
                     {
                         var listaPerfisUsuario = usuarioLogado.Perfil.Select(x => x.Id).ToList();
-                        listVagas = db.Vaga.Where(x => listaPerfisUsuario.Contains(x.Id) && x.Ativa
-                                    && x.Data_Cancelamento == null).ToList();
+                        foreach (var perfilId in listaPerfisUsuario)
+                        {
+                            listVagas.AddRange(
+                                db.Vaga.Where(i => i.Perfil.Any(s => s.Id == perfilId) && i.Ativa && i.Data_Cancelamento == null).ToList()
+                            );
+                        }
                     }
                 }
             }

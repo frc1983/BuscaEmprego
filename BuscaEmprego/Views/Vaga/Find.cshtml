@@ -14,11 +14,23 @@
     @Html.ValidationSummary()
     foreach (var item in Model)
     {
-        <div class="card">
-            @Html.Label(item.Descricao)
-            @Html.Label(item.Salario.ToString())
-            @Html.Label(item.Beneficios)
-            <input type="button" value="Detalhes da vaga" onclick="window.location = '@Url.Action("Details", new { id = @item.Id })'" />
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Perfil da Vaga: @Html.Label(String.Join(", ", item.Perfil.Select(x => x.Nome).ToList()))</h4>
+                </div>
+                <div class="card-block">
+                    <p class="card-text">Descrição: @Html.Label(item.Descricao)</p>
+                    <p class="card-text">Salário: @Html.Label(item.Salario.ToString())</p>
+                    <p class="card-text">Benefícios: @Html.Label(item.Beneficios)</p>
+                    @if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 1)
+                    {
+                        <p class="card-text">Sitaução da Vaga: @Html.Label(item.Ativa ? "Ativa" : "Inativa")</p>
+                        <p class="card-text">Candidatos: @Html.Label(item.Vaga_Usuario.Count.ToString())</p>
+                    }
+                    <input type="button" class="btn btn-default" value="Detalhes da vaga" onclick="window.location = '@Url.Action("Details", "Vaga", new { id = @item.Id })'" />
+                </div>
+            </div>
         </div>
     }
 }

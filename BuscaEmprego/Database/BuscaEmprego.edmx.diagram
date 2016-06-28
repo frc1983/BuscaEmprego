@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1b7fde6dace24d1c9f16450cc360ec3f" Name="Diagram1">
-        <EntityTypeShape EntityType="BuscaEmpregoModel.Endereco" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BuscaEmpregoModel.Perfil" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BuscaEmpregoModel.Tipo" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BuscaEmpregoModel.Tipo_Usuario" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BuscaEmpregoModel.Usuario" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="BuscaEmpregoModel.Vaga" Width="1.5" PointX="5.25" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BuscaEmpregoModel.Vaga_Usuario" Width="1.5" PointX="7.5" PointY="2.875" IsExpanded="true" />
+      <Diagram DiagramId="1b7fde6dace24d1c9f16450cc360ec3f" Name="Diagram1" ZoomLevel="85">
+        <EntityTypeShape EntityType="BuscaEmpregoModel.Endereco" Width="1.5" PointX="6.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BuscaEmpregoModel.Perfil" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BuscaEmpregoModel.Tipo" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BuscaEmpregoModel.Tipo_Usuario" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BuscaEmpregoModel.Usuario" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BuscaEmpregoModel.Vaga" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BuscaEmpregoModel.Vaga_Usuario" Width="1.5" PointX="7.5" PointY="1.625" IsExpanded="true" />
         <AssociationConnector Association="BuscaEmpregoModel.Usuario_Endereco" ManuallyRouted="false" />
         <AssociationConnector Association="BuscaEmpregoModel.Vaga_Vaga_Tipo" ManuallyRouted="false" />
         <AssociationConnector Association="BuscaEmpregoModel.Usuario_Usuario_Tipo" ManuallyRouted="false" />

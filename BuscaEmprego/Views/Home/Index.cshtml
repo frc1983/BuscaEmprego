@@ -16,26 +16,6 @@
         </div>
     </section>
 }
-<h3>Vagas disponíveis no site:</h3>
-@{
-    var vagas = ViewBag.Vagas as List<BuscaEmprego.Database.Vaga>;
-    if (vagas.Count > 0)
-    {
-        foreach (var item in vagas)
-        {
-            <div class="card">
-                @Html.Label(item.Descricao)
-                @Html.Label(item.Salario.ToString())
-                @Html.Label(item.Beneficios)
-                <input type="button" value="Detalhes da vaga" onclick="window.location = '@Url.Action("Details", "Vaga", new { id = @item.Id })'" />
-            </div>
-        }
-    }
-    else
-    {
-        <p>Nenhuma vaga ativa atualmente.</p>
-    }
-}
 
 @if (Session["tipo_usuario"] != null && int.Parse(Session["tipo_usuario"].ToString()) == 2)
 {
@@ -49,11 +29,18 @@
     {
         foreach (var item in vagasPerfil)
         {
-            <div class="card">
-                @Html.Label(item.Descricao)
-                @Html.Label(item.Salario.ToString())
-                @Html.Label(item.Beneficios)
-                <input type="button" value="Detalhes da vaga" onclick="window.location = '@Url.Action("Details", "Vaga", new { id = @item.Id })'" />
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Perfil da Vaga: @Html.Label(String.Join(", ", item.Perfil.Select(x => x.Nome).ToList()))</h4>
+                    </div>
+                    <div class="card-block">
+                        <p class="card-text">Descrição: @Html.Label(item.Descricao)</p>
+                        <p class="card-text">Salário: @Html.Label(item.Salario.ToString())</p>
+                        <p class="card-text">Benefícios: @Html.Label(item.Beneficios)</p>
+                        <input type="button" class="btn btn-default" value="Detalhes da vaga" onclick="window.location = '@Url.Action("Details", "Vaga", new { id = @item.Id })'" />
+                    </div>
+                </div>
             </div>
         }
     }
@@ -62,3 +49,33 @@
         <p>Nenhuma vaga cadastrada para seu perfil</p>
     }
 }
+<p class="clear-fix">&nbsp;</p>
+<h3>Vagas disponíveis no site:</h3>
+<div class="row">
+    @{
+        var vagas = ViewBag.Vagas as List<BuscaEmprego.Database.Vaga>;
+        if (vagas.Count > 0)
+        {
+            foreach (var item in vagas)
+            {
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Perfil da Vaga: @Html.Label(String.Join(", ", item.Perfil.Select(x => x.Nome).ToList()))</h4>
+                        </div>
+                        <div class="card-block">
+                            <p class="card-text">Descrição: @Html.Label(item.Descricao)</p>
+                            <p class="card-text">Salário: @Html.Label(item.Salario.ToString())</p>
+                            <p class="card-text">Benefícios: @Html.Label(item.Beneficios)</p>
+                            <input type="button" class="btn btn-default" value="Detalhes da vaga" onclick="window.location = '@Url.Action("Details", "Vaga", new { id = @item.Id })'" />
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Nenhuma vaga ativa atualmente.</p>
+        }
+    }
+</div>
